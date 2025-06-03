@@ -11,7 +11,7 @@ const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
   _id,
   title,
   slug,
-  description,
+  body,
   publishedAt,
   "imageUrl": mainImage.asset->url,
   event->{
@@ -35,11 +35,13 @@ const urlFor = (source: SanityImageSource) =>
 
 const options = { next: { revalidate: 30 } };
 
-export default async function PostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+interface PostPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function PostPage({ params }: PostPageProps) {
   const post = await client.fetch(POST_QUERY, { slug: params.slug }, options);
 
   if (!params?.slug) {
@@ -80,10 +82,15 @@ export default async function PostPage({
       )}
 
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-      <h2>{post.event.startDate}</h2>
       <div className="prose">
-        <p>Published: {new Date(post.publishedAt).toLocaleDateString()}</p>
-        {Array.isArray(post.body) && <PortableText value={post.body} />}
+        <p className="text-1xl font-bold mb-4">
+          Published: {new Date(post.publishedAt).toLocaleDateString()}
+        </p>
+        {Array.isArray(post.body) && (
+          <div className="pt-4 space-y-4">
+            <PortableText value={post.body} />
+          </div>
+        )}
       </div>
       <h2>{post.endDate}</h2>
     </main>
