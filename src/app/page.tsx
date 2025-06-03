@@ -33,7 +33,7 @@ export default async function IndexPage() {
 
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8">
-      <h1 className="text-4xl font-bold mb-8">Foundation Blog</h1>
+      <h1 className="text-4xl font-bold mb-8">Foundation Collective</h1>
       <ul className="flex flex-col gap-y-4">
         {posts.map((post) => (
           <li className="hover:underline" key={post._id}>
