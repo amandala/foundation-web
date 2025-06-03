@@ -36,15 +36,20 @@ const urlFor = (source: SanityImageSource) =>
 const options = { next: { revalidate: 30 } };
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await client.fetch(POST_QUERY, { slug: params.slug }, options);
+  const resolvedParams = await params;
+  const post = await client.fetch(
+    POST_QUERY,
+    { slug: resolvedParams.slug },
+    options
+  );
 
-  if (!params?.slug) {
+  if (!resolvedParams?.slug) {
     return <div>Error: No slug provided.</div>;
   }
 
