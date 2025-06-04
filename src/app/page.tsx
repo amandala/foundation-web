@@ -45,7 +45,7 @@ type HomePage = {
   featuredPosts?: {
     _id: string;
     title: string;
-    slug: string;
+    slug: { current: string };
     description: string;
     publishedAt: string;
     imageUrl?: string;
@@ -177,7 +177,7 @@ export default function HomePage() {
             {data.featuredPosts.map((post) => (
               <a
                 key={post._id}
-                href={`/blog/${post.slug}`}
+                href={`/blog/${post.slug.current}`}
                 className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
               >
                 {post.imageUrl && (

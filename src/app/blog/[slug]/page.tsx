@@ -64,8 +64,8 @@ export default async function PostPage({ params }: PostPageProps) {
     );
   }
 
-  const postImageUrl = post.event.coverImageUrl
-    ? urlFor(post.event.coverImageUrl)?.width(550).height(550).url()
+  const postImageUrl = post.imageUrl
+    ? urlFor(post.imageUrl)?.width(550).height(550).url()
     : null;
 
   console.log("Fetched post:", post);
