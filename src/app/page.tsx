@@ -170,23 +170,10 @@ export default function HomePage() {
               padding: 0,
             }}
           >
-            {socialLinks.map(({ type, url, icon }, i) => (
+            {socialLinks.map(({ type, url }, i) => (
               <li key={i}>
                 <a href={url} target="_blank" rel="noopener noreferrer">
-                  {icon ? (
-                    <Image
-                      src={urlFor(icon).width(24).height(24).url()}
-                      alt={type}
-                      width={24}
-                      height={24}
-                      style={{
-                        display: "inline-block",
-                        verticalAlign: "middle",
-                      }}
-                    />
-                  ) : (
-                    type
-                  )}
+                  {type}
                 </a>
               </li>
             ))}
