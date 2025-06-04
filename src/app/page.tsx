@@ -108,7 +108,13 @@ export default function HomePage() {
         />
       )}
       {heroMedia?.type === "video" && heroMedia.video && (
-        <video style={{ width: "100%", height: "auto" }} loop muted autoPlay>
+        <video
+          style={{ width: "100%", height: "auto" }}
+          loop
+          muted
+          autoPlay
+          playsInline
+        >
           <source src={urlForFile(heroMedia?.video)} type="video/mp4" />
           Your browser does not support the video tag.
         </video>

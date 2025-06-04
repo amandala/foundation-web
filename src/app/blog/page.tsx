@@ -29,8 +29,6 @@ const options = { next: { revalidate: 30 } };
 export default async function BlogPage() {
   const posts = await client.fetch<SanityDocument[]>(POSTS_QUERY, {}, options);
 
-  console.log("Fetched posts:", posts);
-
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8">
       <h1 className="text-4xl font-bold mb-8">Foundation Blog</h1>
