@@ -81,7 +81,6 @@ export default function HomePage() {
 
   useEffect(() => {
     client.fetch(query).then((res) => {
-      console.log("Fetched home page data:", res);
       setData(res);
       setLoading(false);
     });
@@ -123,6 +122,7 @@ export default function HomePage() {
           </video>
         </section>
       )}
+
       {/* Intro Section */}
       <section className="mx-auto max-w-3xl p-8">
         <h1 className="text-4xl font-bold text-center mb-8">
@@ -133,6 +133,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Featured Event Section */}
       {featuredEvent && (
         <section className="mx-auto max-w-3xl p-8">
           <h2 className="text-2xl font-bold mb-4">Featured Event</h2>
@@ -170,6 +171,7 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Featured Blog Posts Section */}
       {data.featuredPosts && data.featuredPosts.length > 0 && (
         <section className="mx-auto max-w-3xl p-8">
           <h2 className="text-2xl font-bold mb-4">Featured Blog Posts</h2>
@@ -220,6 +222,7 @@ export default function HomePage() {
           </p>
         </section>
       )}
+
       {/* Social Links Section */}
       {socialLinks && socialLinks.length > 0 && (
         <footer className="mx-auto max-w-3xl p-8">

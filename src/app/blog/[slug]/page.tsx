@@ -68,8 +68,6 @@ export default async function PostPage({ params }: PostPageProps) {
     ? urlFor(post.imageUrl)?.width(550).height(550).url()
     : null;
 
-  console.log("Fetched post:", post);
-
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
       <Link href="/" className="hover:underline">
