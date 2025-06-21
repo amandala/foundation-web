@@ -3,18 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { client } from "@/sanity/client";
-import Image from "next/image";
+// import Image from "next/image";
 
 type FooterData = {
   contactEmail?: string;
   socialLinks?: SocialLink[];
 };
 
-import imageUrlBuilder from "@sanity/image-url";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+// import imageUrlBuilder from "@sanity/image-url";
+// import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { SocialLink } from "../types";
-const builder = imageUrlBuilder(client);
-const urlFor = (source: SanityImageSource) => builder.image(source);
+// const builder = imageUrlBuilder(client);
+// const urlFor = (source: SanityImageSource) => builder.image(source);
 
 export default function Footer() {
   const [data, setData] = useState<FooterData | null>(null);
@@ -69,14 +69,14 @@ export default function Footer() {
             <ul className="space-y-2">
               {data.socialLinks.map((link, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  {link.icon?.asset && (
+                  {/* {link.icon?.asset && (
                     <Image
                       src={urlFor(link.icon).width(20).height(20).url()}
                       alt={link.type}
                       width={20}
                       height={20}
                     />
-                  )}
+                  )} */}
                   <a
                     href={link.url}
                     target="_blank"

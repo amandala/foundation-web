@@ -56,8 +56,6 @@ function urlForFile(source: { asset?: { _ref?: string; url?: string } }) {
 const query = `*[_type == "homePage"][0]{
   heroMedia,
   introText,
-  contactEmail,
-  socialLinks,
   featuredEvent->{
     name,
     "slug": slug.current,
@@ -110,8 +108,6 @@ export default function HomePage() {
     heroMedia,
     introText,
     featuredEvent,
-    contactEmail,
-    socialLinks,
     featuredPosts,
     featuredGalleryImages,
     foundationPartners,
