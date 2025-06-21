@@ -163,6 +163,7 @@ const GalleryPage = () => {
       {/* Gallery Images - flat grid */}
       <div className={styles.grid}>
         {galleryImages.map((image) => {
+          if (!image.image) return null; // Skip if no image
           const thumbnailUrl = urlFor(image.image)
             .width(400)
             .height(250)
