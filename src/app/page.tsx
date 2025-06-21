@@ -5,11 +5,45 @@ import Image from "next/image";
 import { client } from "../sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { PortableText, PortableTextBlock } from "@portabletext/react";
+import { Partner } from "./types";
+
+interface HomePage {
+  heroMedia?: {
+    type: "image" | "video";
+    image?: { asset: { _ref: string } };
+    video?: { asset?: { _ref?: string; url?: string } };
+  };
+  introText?: PortableTextBlock[];
+  contactEmail?: string;
+  socialLinks?: { type: string; url: string }[];
+  featuredEvent?: {
+    name: string;
+    slug: string;
+    coverImage?: { asset: { _ref: string } };
+    startDate: string;
+    endDate: string;
+    description: PortableTextBlock[];
+  };
+  featuredPosts?: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    description: string;
+    publishedAt: string;
+    imageUrl: string;
+  }[];
+  featuredGalleryImages?: {
+    _id: string;
+    image: { asset: { _ref: string } };
+    caption?: string;
+    photoCredit?: string;
+    tags?: string[];
+  }[];
+  foundationPartners?: Partner[];
+}
 
 const builder = imageUrlBuilder(client);
-function urlFor(source: { asset: { _ref: string } }) {
-  return builder.image(source);
-}
+const urlFor = (source: { asset: { _ref: string } }) => builder.image(source);
 
 function urlForFile(source: { asset?: { _ref?: string; url?: string } }) {
   if (source?.asset?.url) return source.asset.url;
@@ -18,39 +52,6 @@ function urlForFile(source: { asset?: { _ref?: string; url?: string } }) {
   const [, id, ext] = ref.split("-");
   return `https://cdn.sanity.io/files/4qydhzw9/production/${id}.${ext}`;
 }
-
-type Event = {
-  name: string;
-  slug: { current: string };
-  coverImage: { asset: { _ref: string } };
-  startDate: string;
-  endDate: string;
-  description: PortableTextBlock[];
-};
-
-type HomePage = {
-  heroMedia: {
-    type: "image" | "video";
-    image?: { asset: { _ref: string } };
-    video?: { asset: { url: string } };
-  };
-  introText: PortableTextBlock[];
-  featuredEvent?: Event;
-  contactEmail?: string;
-  socialLinks?: {
-    type: string;
-    url: string;
-    icon?: PortableTextBlock | string | null;
-  }[];
-  featuredPosts?: {
-    _id: string;
-    title: string;
-    slug: { current: string };
-    description: string;
-    publishedAt: string;
-    imageUrl?: string;
-  }[];
-};
 
 const query = `*[_type == "homePage"][0]{
   heroMedia,
@@ -72,12 +73,28 @@ const query = `*[_type == "homePage"][0]{
     description,
     publishedAt,
     "imageUrl": mainImage.asset->url,
-    }
+  },
+  featuredGalleryImages[]->{
+    _id,
+    image,
+    caption,
+    photoCredit,
+    "tags": tags[]->slug.current
+  },
+  foundationPartners[]->{
+    _id,
+    name,
+    logo,
+    link
+  }
 }`;
 
 export default function HomePage() {
   const [data, setData] = useState<HomePage | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Modal state for selected featured gallery image URL
+  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     client.fetch(query).then((res) => {
@@ -89,8 +106,16 @@ export default function HomePage() {
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (!data) return <p className="text-center text-red-500">No data found</p>;
 
-  const { heroMedia, introText, featuredEvent, contactEmail, socialLinks } =
-    data;
+  const {
+    heroMedia,
+    introText,
+    featuredEvent,
+    contactEmail,
+    socialLinks,
+    featuredPosts,
+    featuredGalleryImages,
+    foundationPartners,
+  } = data;
 
   return (
     <main className="min-h-screen bg-gray-100">
@@ -98,24 +123,15 @@ export default function HomePage() {
       {heroMedia?.type === "image" && heroMedia.image && (
         <section className="relative">
           <Image
-            src={urlFor(heroMedia.image as { asset: { _ref: string } })
-              .width(1200)
-              .url()}
+            src={urlFor(heroMedia.image).width(1200).url()}
             alt="Hero"
             width={1200}
             height={400}
             className="w-full h-auto object-cover"
             placeholder="blur"
-            blurDataURL={urlFor(heroMedia.image as { asset: { _ref: string } })
-              .width(1200)
-              .blur(20)
-              .url()}
+            blurDataURL={urlFor(heroMedia.image).width(1200).blur(20).url()}
             loading="eager"
             quality={80}
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              console.error("Error loading hero image:", e);
-              e.currentTarget.src = "/fallback-image.jpg"; // Fallback image
-            }}
           />
         </section>
       )}
@@ -134,7 +150,7 @@ export default function HomePage() {
           Welcome to Foundation Collective
         </h1>
         <div className="prose mx-auto">
-          <PortableText value={introText} />
+          <PortableText value={introText || []} />
         </div>
       </section>
 
@@ -177,11 +193,11 @@ export default function HomePage() {
       )}
 
       {/* Featured Blog Posts Section */}
-      {data.featuredPosts && data.featuredPosts.length > 0 && (
+      {featuredPosts && featuredPosts.length > 0 && (
         <section className="mx-auto max-w-3xl p-8">
           <h2 className="text-2xl font-bold mb-4">Featured Blog Posts</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {data.featuredPosts.map((post) => (
+            {featuredPosts.map((post) => (
               <a
                 key={post._id}
                 href={`/blog/${post.slug.current}`}
@@ -212,6 +228,116 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Featured Gallery Images Section */}
+      {featuredGalleryImages && featuredGalleryImages.length > 0 && (
+        <section className="mx-auto max-w-5xl p-8">
+          <h2 className="text-2xl font-bold mb-6">Featured Gallery</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {featuredGalleryImages.map((img) => {
+              const thumbUrl = urlFor(img.image)
+                .width(400)
+                .height(250)
+                .auto("format")
+                .url();
+
+              const fullUrl = urlFor(img.image).auto("format").url();
+
+              return (
+                <div
+                  key={img._id}
+                  className="cursor-pointer rounded-lg overflow-hidden shadow hover:opacity-80 transition-opacity"
+                  onClick={() => setModalImageUrl(fullUrl)}
+                >
+                  <Image
+                    src={thumbUrl}
+                    alt={img.caption || "Featured image"}
+                    width={400}
+                    height={250}
+                    style={{ objectFit: "cover" }}
+                    placeholder="blur"
+                    blurDataURL={urlFor(img.image)
+                      .width(400)
+                      .height(250)
+                      .blur(20)
+                      .url()}
+                    loading="lazy"
+                  />
+                  {img.caption && (
+                    <p className="text-sm text-center mt-2 text-gray-600">
+                      {img.caption}
+                    </p>
+                  )}
+                  {img.photoCredit && (
+                    <p className="text-xs text-center mt-1 text-gray-400 italic">
+                      {img.photoCredit}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Modal overlay */}
+      {modalImageUrl && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer"
+          onClick={() => setModalImageUrl(null)}
+        >
+          <Image
+            src={modalImageUrl}
+            alt="Full size image"
+            width={800}
+            height={600}
+            style={{ objectFit: "contain" }}
+            priority
+          />
+        </div>
+      )}
+
+      {/* Foundation Partners Section */}
+      {foundationPartners && foundationPartners.length > 0 && (
+        <section className="mx-auto max-w-5xl p-8">
+          <h2 className="text-2xl font-bold mb-6">Our Partners</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center">
+            {foundationPartners.map((partner: Partner) => (
+              <a
+                key={partner._id}
+                href={partner.link || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
+                title={partner.name}
+              >
+                {partner.logo ? (
+                  <Image
+                    src={urlFor(partner.logo)
+                      .width(200)
+                      .height(100)
+                      .auto("format")
+                      .url()}
+                    alt={partner.name}
+                    width={200}
+                    height={100}
+                    style={{ objectFit: "contain" }}
+                    placeholder="blur"
+                    blurDataURL={urlFor(partner.logo)
+                      .width(200)
+                      .height(100)
+                      .blur(20)
+                      .url()}
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="text-gray-700">{partner.name}</span>
+                )}
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Contact Section */}
       {contactEmail && (
         <section className="mx-auto max-w-3xl p-8">
@@ -228,7 +354,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Social Links Section */}
       {socialLinks && socialLinks.length > 0 && (
         <footer className="mx-auto max-w-3xl p-8">
           <h2 className="text-2xl font-bold mb-4">Follow</h2>

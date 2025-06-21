@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+// Removed the import of Metadata as it is not exported from "next"
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+
+import Nav from "./components/nav";
 
 import "./globals.css";
 
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Foundation Collective",
   description: "Foundation Collective",
 };
@@ -30,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Nav />
         {children}
       </body>
     </html>
