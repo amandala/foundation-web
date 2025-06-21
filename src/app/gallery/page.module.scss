@@ -1,0 +1,120 @@
+.container {
+  max-width: 48rem; // max-w-3xl ~ 768px
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.main {
+  // additional main styles if needed
+}
+
+.title {
+  font-size: 1.5rem; // text-2xl
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.tagCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tagButton {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db; // gray-300
+  background-color: #e5e7eb; // gray-200
+  color: #374151; // gray-700
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: #d1d5db;
+  }
+}
+
+.activeTag {
+  background-color: #2563eb; // blue-600
+  color: white;
+  border-color: #2563eb;
+}
+
+.clearButton {
+  margin-left: auto;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #ef4444; // red-500
+  background-color: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #ef4444;
+    color: white;
+  }
+}
+
+.activeFilters {
+  margin-bottom: 1rem;
+  font-size: 0.875rem; // text-sm
+}
+
+.imageGroup {
+  margin-bottom: 2rem;
+}
+
+.tagHeading {
+  text-transform: capitalize;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.imageWrapper {
+  cursor: pointer;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 150px; // fixed height for rectangular look
+  object-fit: cover;
+  aspect-ratio: 16 / 10;
+  display: block;
+  border-radius: 0.5rem;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.modalImage {
+  border-radius: 0.5rem;
+  max-height: 90vh;
+  object-fit: contain;
+}
