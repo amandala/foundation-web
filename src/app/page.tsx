@@ -337,42 +337,6 @@ export default function HomePage() {
           </div>
         </section>
       )}
-
-      {/* Contact Section */}
-      {contactEmail && (
-        <section className="mx-auto max-w-3xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Contact</h2>
-          <p className="text-gray-700">
-            Reach out to us at{" "}
-            <a
-              href={`mailto:${contactEmail}`}
-              className="text-blue-500 hover:underline"
-            >
-              {contactEmail}
-            </a>
-          </p>
-        </section>
-      )}
-
-      {socialLinks && socialLinks.length > 0 && (
-        <footer className="mx-auto max-w-3xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Follow</h2>
-          <ul className="flex gap-4">
-            {socialLinks.map(({ type, url }, i) => (
-              <li key={i}>
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {type}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </footer>
-      )}
     </main>
   );
 }
