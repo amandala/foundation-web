@@ -2,7 +2,7 @@
 
 import styles from "./styles.module.scss";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { client } from "../../sanity/client";
@@ -24,7 +24,7 @@ type Tag = {
 };
 
 const builder = imageUrlBuilder(client);
-const urlFor = (source: any) => builder.image(source);
+const urlFor = (source: SanityImageSource) => builder.image(source);
 
 const fetchGalleryImages = async (
   tagSlugs: string[] = []
@@ -39,12 +39,14 @@ const fetchGalleryImages = async (
 
   const results = await client.fetch(query, { tagSlugs, tagCount });
 
-  return results.map((item: any) => ({
-    _id: item._id,
-    image: item.image,
-    tag: item.tags?.[0] || "untagged",
-    tags: item.tags || [],
-  }));
+  return results.map(
+    (item: { _id: string; image: SanityImageSource; tags?: string[] }) => ({
+      _id: item._id,
+      image: item.image,
+      tag: item.tags?.[0] || "untagged",
+      tags: item.tags || [],
+    })
+  );
 };
 
 const fetchAllTags = async (): Promise<Tag[]> => {
@@ -54,7 +56,10 @@ const fetchAllTags = async (): Promise<Tag[]> => {
 const GalleryPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tagParams = searchParams.getAll("tag").slice(0, 2);
+
+  const tagParams = useMemo(() => {
+    return searchParams.getAll("tag").slice(0, 2);
+  }, [searchParams]);
 
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
@@ -62,7 +67,7 @@ const GalleryPage = () => {
 
   useEffect(() => {
     fetchGalleryImages(tagParams).then(setGalleryImages);
-  }, [tagParams.join(",")]);
+  }, [tagParams]);
 
   useEffect(() => {
     fetchAllTags().then(setAllTags);
