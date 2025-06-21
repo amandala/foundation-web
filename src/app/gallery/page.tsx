@@ -72,8 +72,8 @@ const GalleryPage = () => {
                 <Image
                   src={image.url}
                   alt={tag}
-                  width={150}
-                  height={150}
+                  width={350}
+                  height={350}
                   className="rounded shadow hover:opacity-80 transition"
                 />
               </div>
