@@ -23,8 +23,6 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-const options = { next: { revalidate: 30 } };
-
 interface PostPageProps {
   params: Promise<{
     slug: string;
@@ -33,11 +31,7 @@ interface PostPageProps {
 
 export default async function PostPage({ params }: PostPageProps) {
   const resolvedParams = await params;
-  const event = await client.fetch(
-    EVENT_QUERY,
-    { slug: resolvedParams.slug },
-    options
-  );
+  const event = await client.fetch(EVENT_QUERY, { slug: resolvedParams.slug });
 
   if (!resolvedParams?.slug) {
     return <div>Error: No slug provided.</div>;

@@ -98,16 +98,21 @@ export default function HomePage() {
       {heroMedia?.type === "image" && heroMedia.image && (
         <section className="relative">
           <Image
-            src={urlFor(heroMedia.image).width(1200).url()}
+            src={urlFor(heroMedia.image as { asset: { _ref: string } })
+              .width(1200)
+              .url()}
             alt="Hero"
             width={1200}
             height={400}
             className="w-full h-auto object-cover"
             placeholder="blur"
-            blurDataURL={urlFor(heroMedia.image).width(1200).blur(20).url()}
+            blurDataURL={urlFor(heroMedia.image as { asset: { _ref: string } })
+              .width(1200)
+              .blur(20)
+              .url()}
             loading="eager"
             quality={80}
-            onError={(e) => {
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
               console.error("Error loading hero image:", e);
               e.currentTarget.src = "/fallback-image.jpg"; // Fallback image
             }}
