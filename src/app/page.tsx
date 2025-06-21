@@ -114,7 +114,7 @@ export default function HomePage() {
   } = data;
 
   return (
-    <main className="min-h-screen bg-gray-100">
+    <main className="min-h-screen">
       {/* Hero Section */}
       {heroMedia?.type === "image" && heroMedia.image && (
         <section className="relative">
@@ -149,6 +149,57 @@ export default function HomePage() {
           <PortableText value={introText || []} />
         </div>
       </section>
+
+      {/* Featured Gallery Images Section */}
+      {featuredGalleryImages && featuredGalleryImages.length > 0 && (
+        <section className="mx-auto max-w-5xl p-8">
+          <h2 className="text-2xl font-bold mb-6">Featured Gallery</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {featuredGalleryImages.map((img) => {
+              const thumbUrl = urlFor(img.image)
+                .width(400)
+                .height(250)
+                .auto("format")
+                .url();
+
+              const fullUrl = urlFor(img.image).auto("format").url();
+
+              return (
+                <div
+                  key={img._id}
+                  className="cursor-pointer rounded-lg overflow-hidden shadow hover:opacity-80 transition-opacity"
+                  onClick={() => setModalImageUrl(fullUrl)}
+                >
+                  <Image
+                    src={thumbUrl}
+                    alt={img.caption || "Featured image"}
+                    width={400}
+                    height={250}
+                    style={{ objectFit: "cover" }}
+                    placeholder="blur"
+                    blurDataURL={urlFor(img.image)
+                      .width(400)
+                      .height(250)
+                      .blur(20)
+                      .url()}
+                    loading="lazy"
+                  />
+                  {img.caption && (
+                    <p className="text-sm text-center mt-2 text-gray-600">
+                      {img.caption}
+                    </p>
+                  )}
+                  {img.photoCredit && (
+                    <p className="text-xs text-center mt-1 text-gray-400 italic">
+                      {img.photoCredit}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Featured Event Section */}
       {featuredEvent && (
@@ -220,57 +271,6 @@ export default function HomePage() {
                 </div>
               </a>
             ))}
-          </div>
-        </section>
-      )}
-
-      {/* Featured Gallery Images Section */}
-      {featuredGalleryImages && featuredGalleryImages.length > 0 && (
-        <section className="mx-auto max-w-5xl p-8">
-          <h2 className="text-2xl font-bold mb-6">Featured Gallery</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {featuredGalleryImages.map((img) => {
-              const thumbUrl = urlFor(img.image)
-                .width(400)
-                .height(250)
-                .auto("format")
-                .url();
-
-              const fullUrl = urlFor(img.image).auto("format").url();
-
-              return (
-                <div
-                  key={img._id}
-                  className="cursor-pointer rounded-lg overflow-hidden shadow hover:opacity-80 transition-opacity"
-                  onClick={() => setModalImageUrl(fullUrl)}
-                >
-                  <Image
-                    src={thumbUrl}
-                    alt={img.caption || "Featured image"}
-                    width={400}
-                    height={250}
-                    style={{ objectFit: "cover" }}
-                    placeholder="blur"
-                    blurDataURL={urlFor(img.image)
-                      .width(400)
-                      .height(250)
-                      .blur(20)
-                      .url()}
-                    loading="lazy"
-                  />
-                  {img.caption && (
-                    <p className="text-sm text-center mt-2 text-gray-600">
-                      {img.caption}
-                    </p>
-                  )}
-                  {img.photoCredit && (
-                    <p className="text-xs text-center mt-1 text-gray-400 italic">
-                      {img.photoCredit}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
           </div>
         </section>
       )}

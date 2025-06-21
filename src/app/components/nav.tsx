@@ -7,7 +7,7 @@ export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md p-4 flex justify-between items-center max-w-7xl mx-auto relative">
+    <header className="bg-white p-4 flex justify-between items-center max-w-7xl mx-auto relative">
       <Link href="/">
         <div className="text-xl font-bold">Foundation Collective</div>
       </Link>
@@ -66,7 +66,7 @@ export default function Nav() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <ul className="flex flex-col absolute top-full right-0 mt-2 bg-white border rounded shadow-md w-40 md:hidden z-50">
+          <ul className="flex flex-col absolute top-full right-0 mt-2 bg-white w-40 md:hidden z-50">
             <li>
               <Link
                 href="/gallery"
