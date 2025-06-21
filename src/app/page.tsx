@@ -147,7 +147,7 @@ export default function HomePage() {
       {/* Intro Section */}
       <section className="mx-auto max-w-3xl p-8">
         <h1 className="text-4xl font-bold text-center mb-8">
-          Welcome to Foundation Collective
+          Foundation Collective
         </h1>
         <div className="prose mx-auto">
           <PortableText value={introText || []} />
