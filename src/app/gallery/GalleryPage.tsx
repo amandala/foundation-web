@@ -155,9 +155,9 @@ const GalleryPage = () => {
           {activeTags.map(
             (tag, i) =>
               tag.description && (
-                <div key={i} className={styles.filterDescriptions}>
-                  <p className={styles.filterTitle}>{tag.name}</p>
-                  <p className={styles.filterDescription}>{tag.description}</p>
+                <div key={i} className="mt-12">
+                  <p className="text-2xl font-bold">{tag.name}</p>
+                  <p>{tag.description}</p>
                 </div>
               )
           )}
