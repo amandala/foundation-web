@@ -23,7 +23,7 @@ export const Gallery = ({
   return (
     <div>
       <div
-        className={`grid gap-4`}
+        className={`grid gap-1`}
         style={{
           gridTemplateColumns: `repeat(${4}, minmax(0, 1fr))`,
         }}
