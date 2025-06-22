@@ -65,10 +65,9 @@ const GalleryPage = () => {
     fetchAllTags().then(setAllTags);
   }, []);
 
-  const activeTagDescriptions = tagParams
+  const activeTags = tagParams
     .map((slug) => allTags.find((tag) => tag.slug.current === slug))
-    .filter((tag): tag is Tag => !!tag?.description)
-    .map((tag) => tag!.description!);
+    .filter((tag): tag is Tag => !!tag);
 
   const updateQueryParams = (tags: string[]) => {
     const params = new URLSearchParams();
@@ -97,7 +96,19 @@ const GalleryPage = () => {
 
   return (
     <main className={`${styles.container} ${styles.main}`}>
-      <h1 className={styles.title}>Gallery</h1>
+      <h1 className={styles.title}>
+        <span className="text-4xl font-bold">Gallery </span>
+        {tagParams.length > 0 && (
+          <span className={styles.activeFilters}>
+            Filtering by: <strong>{tagParams.join(" + ")}</strong>
+          </span>
+        )}
+        {tagParams.length > 0 && (
+          <button onClick={clearFilters} className={styles.clearButton}>
+            Clear Filters
+          </button>
+        )}
+      </h1>
 
       <div className={styles.tagCloud}>
         {/* Special Tags Row */}
@@ -135,33 +146,23 @@ const GalleryPage = () => {
             );
           })}
         </div>
-
-        {tagParams.length > 0 && (
-          <button onClick={clearFilters} className={styles.clearButton}>
-            Clear Filters
-          </button>
-        )}
       </div>
 
-      {tagParams.length > 0 && (
-        <div className={styles.activeFilters}>
-          <p>
-            Filtering by: <strong>{tagParams.join(" + ")}</strong>
-          </p>
-        </div>
-      )}
-
-      {activeTagDescriptions.length > 0 && (
-        <div className={styles.filterDescriptions}>
-          {activeTagDescriptions.map((desc, i) => (
-            <p key={i} className={styles.filterDescription}>
-              {desc}
-            </p>
-          ))}
-        </div>
-      )}
-
       <Gallery galleryImages={galleryImages} />
+
+      {activeTags.length > 0 && (
+        <div>
+          {activeTags.map(
+            (tag, i) =>
+              tag.description && (
+                <div key={i} className={styles.filterDescriptions}>
+                  <p className={styles.filterTitle}>{tag.name}</p>
+                  <p className={styles.filterDescription}>{tag.description}</p>
+                </div>
+              )
+          )}
+        </div>
+      )}
     </main>
   );
 };

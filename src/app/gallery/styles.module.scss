@@ -6,12 +6,11 @@
 }
 
 .title {
-  font-size: 1.5rem; // text-2xl
-  font-weight: 700;
+  display: flex;
+  align-items: baseline;
   margin-bottom: 1rem;
 }
 
-.tagCloud,
 .otherTags,
 .specialTagRow {
   display: flex;
@@ -42,14 +41,13 @@
 }
 
 .clearButton {
-  margin-left: auto;
-  padding: 0.25rem 0.75rem;
+  font-size: 10px;
+  padding: 4px;
+  margin-left: 12px;
   border-radius: 9999px;
   border: 1px solid #ef4444; // red-500
   background-color: transparent;
   color: #ef4444;
-  cursor: pointer;
-  user-select: none;
   transition: all 0.3s ease;
 
   &:hover {
@@ -59,8 +57,8 @@
 }
 
 .activeFilters {
-  margin-bottom: 1rem;
-  font-size: 0.875rem; // text-sm
+  margin-left: 12px;
+  display: inline;
 }
 
 .imageGroup {
@@ -115,4 +113,8 @@
   border-radius: 0.5rem;
   max-height: 90vh;
   object-fit: contain;
+}
+
+.filterDescriptions {
+  margin-top: 12px;
 }
