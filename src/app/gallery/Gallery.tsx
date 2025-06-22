@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "../../sanity/client";
@@ -18,21 +18,35 @@ export const Gallery = ({
   const builder = imageUrlBuilder(client);
   const urlFor = (source: SanityImageSource) => builder.image(source);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (selectedIndex === null) return;
     setSelectedIndex((selectedIndex + 1) % galleryImages.length);
-  };
+  }, [selectedIndex, galleryImages.length]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (selectedIndex === null) return;
     setSelectedIndex(
       (selectedIndex - 1 + galleryImages.length) % galleryImages.length
     );
-  };
+  }, [selectedIndex, galleryImages.length]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setSelectedIndex(null);
-  };
+  }, []);
+
+  // Arrow key navigation
+  useEffect(() => {
+    if (selectedIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "Escape") handleClose();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedIndex, handleNext, handlePrev, handleClose]);
 
   return (
     <div>
@@ -99,7 +113,8 @@ export const Gallery = ({
                 </p>
               )}
             </div>
-            {/* Arrow Controls */}
+
+            {/* Arrows */}
             <button
               onClick={handlePrev}
               className="absolute top-1/2 left-[-3rem] transform -translate-y-1/2 text-white text-3xl font-bold hover:text-green-400"
