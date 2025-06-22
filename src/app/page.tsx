@@ -192,12 +192,14 @@ export default function HomePage() {
       {/* Featured Gallery Images Section */}
 
       {featuredGalleryImages && featuredGalleryImages.length > 0 && (
-        <Gallery
-          galleryImages={featuredGalleryImages.map((img) => ({
-            ...img,
-            tags: img.tags || [],
-          }))}
-        />
+        <div className="py-12">
+          <Gallery
+            galleryImages={featuredGalleryImages.map((img) => ({
+              ...img,
+              tags: img.tags || [],
+            }))}
+          />
+        </div>
       )}
 
       {/* Featured Blog Posts Section */}
