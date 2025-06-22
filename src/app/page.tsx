@@ -84,7 +84,8 @@ const query = `*[_type == "homePage"][0]{
     _id,
     name,
     logo,
-    link
+    link,
+    order
   }
 }`;
 
@@ -97,13 +98,20 @@ export default function HomePage() {
 
   useEffect(() => {
     client.fetch(query).then((res) => {
+      if (res.foundationPartners) {
+        res.foundationPartners = res.foundationPartners.sort(
+          (a: Partner, b: Partner) => (a.order || 0) - (b.order || 0)
+        );
+      }
       setData(res);
       setLoading(false);
     });
   }, []);
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
-  if (!data) return <p className="text-center text-red-500">No data found</p>;
+  if (loading)
+    return <p className="text-center text-gray-500 m-24">Loading...</p>;
+  if (!data)
+    return <p className="text-center text-red-500 m-24">No data found</p>;
 
   const {
     heroMedia,

@@ -25,6 +25,7 @@ export type Partner = {
   name: string;
   logo: { asset: { _ref: string } };
   link?: string;
+  order?: number;
 };
 
 export type HomePage = {
