@@ -1,5 +1,5 @@
 .container {
-  max-width: 48rem; // max-w-3xl ~ 768px
+  max-width: 80rem; // max-w-3xl ~ 768px
   margin: 0 auto;
   padding: 2rem;
   min-height: 100vh;
@@ -11,10 +11,12 @@
   margin-bottom: 1rem;
 }
 
-.tagCloud {
+.tagCloud,
+.otherTags,
+.specialTagRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 4px;
   margin-bottom: 1.5rem;
 }
 

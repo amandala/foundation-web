@@ -32,7 +32,7 @@ export default function Footer() {
   if (!data) return null;
 
   return (
-    <footer className="bg-white border-t border-white mt-16  p-8 text-sm text-gray-700">
+    <footer className="bg-white border-t border-white mt-8 p-8 text-sm text-gray-700">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-6 text-center md:text-left">
         {/* Navigation Section */}
         <div className="flex flex-col items-center md:items-start">

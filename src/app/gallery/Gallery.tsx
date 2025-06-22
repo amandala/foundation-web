@@ -25,7 +25,7 @@ export const Gallery = ({
       <div
         className={`grid gap-4`}
         style={{
-          gridTemplateColumns: `repeat(${galleryImages.length > 2 ? galleryImages.length / 2 : 2}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${4}, minmax(0, 1fr))`,
         }}
       >
         {galleryImages.map((image) => {

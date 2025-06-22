@@ -5,7 +5,6 @@ import styles from "./styles.module.scss";
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { client } from "../../sanity/client";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { GalleryImage, Tag } from "../types";
 import { Gallery } from "./Gallery";
 
@@ -15,21 +14,20 @@ const fetchGalleryImages = async (
   const tagCount = tagSlugs.length;
   const query =
     tagCount === 0
-      ? `*[_type == "galleryImage"]{ _id, image, "tags": tags[]->slug.current }`
+      ? `*[_type == "galleryImage"]{ _id, image, "tags": tags[]->slug.current, caption }`
       : `*[_type == "galleryImage" && count((tags[]->slug.current)[@ in $tagSlugs]) == $tagCount]{
-          _id, image, "tags": tags[]->slug.current
-        }`;
+        _id, image, "tags": tags[]->slug.current, caption
+      }`;
 
   const results = await client.fetch(query, { tagSlugs, tagCount });
 
-  return results.map(
-    (item: { _id: string; image: SanityImageSource; tags?: string[] }) => ({
-      _id: item._id,
-      image: item.image,
-      tag: item.tags?.[0] || "untagged",
-      tags: item.tags || [],
-    })
-  );
+  return results.map((item: GalleryImage) => ({
+    _id: item._id,
+    image: item.image,
+    tag: item.tags?.[0] || "untagged",
+    tags: item.tags || [],
+    caption: item.caption || "",
+  }));
 };
 
 const fetchAllTags = async (): Promise<Tag[]> => {
@@ -47,8 +45,20 @@ const GalleryPage = () => {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
 
+  const sortGalleryImagesByCaption = (
+    images: GalleryImage[]
+  ): GalleryImage[] => {
+    return images.sort((a, b) => {
+      const captionA = a.caption?.toLowerCase() || "";
+      const captionB = b.caption?.toLowerCase() || "";
+      return captionA.localeCompare(captionB);
+    });
+  };
+
   useEffect(() => {
-    fetchGalleryImages(tagParams).then(setGalleryImages);
+    fetchGalleryImages(tagParams)
+      .then(sortGalleryImagesByCaption)
+      .then(setGalleryImages);
   }, [tagParams]);
 
   useEffect(() => {
@@ -77,25 +87,54 @@ const GalleryPage = () => {
 
   const clearFilters = () => updateQueryParams([]);
 
+  const specialTagSlugs = ["oldschool", "newschool"];
+  const specialTags = allTags.filter((tag) =>
+    specialTagSlugs.includes(tag.slug.current)
+  );
+  const otherTags = allTags
+    .filter((tag) => !specialTagSlugs.includes(tag.slug.current))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <main className={`${styles.container} ${styles.main}`}>
       <h1 className={styles.title}>Gallery</h1>
 
       <div className={styles.tagCloud}>
-        {allTags.map((tag) => {
-          const isActive = tagParams.includes(tag.slug.current);
-          return (
-            <button
-              key={tag._id}
-              onClick={() => toggleTag(tag.slug.current)}
-              className={`${styles.tagButton} ${
-                isActive ? styles.activeTag : ""
-              }`}
-            >
-              {tag.name}
-            </button>
-          );
-        })}
+        {/* Special Tags Row */}
+        <div className={styles.specialTagRow}>
+          {specialTags.map((tag) => {
+            const isActive = tagParams.includes(tag.slug.current);
+            return (
+              <button
+                key={tag._id}
+                onClick={() => toggleTag(tag.slug.current)}
+                className={`${styles.tagButton} ${
+                  isActive ? styles.activeTag : ""
+                }`}
+              >
+                {tag.name}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* All Other Tags */}
+        <div className={styles.otherTags}>
+          {otherTags.map((tag) => {
+            const isActive = tagParams.includes(tag.slug.current);
+            return (
+              <button
+                key={tag._id}
+                onClick={() => toggleTag(tag.slug.current)}
+                className={`${styles.tagButton} ${
+                  isActive ? styles.activeTag : ""
+                }`}
+              >
+                {tag.name}
+              </button>
+            );
+          })}
+        </div>
 
         {tagParams.length > 0 && (
           <button onClick={clearFilters} className={styles.clearButton}>
@@ -123,51 +162,6 @@ const GalleryPage = () => {
       )}
 
       <Gallery galleryImages={galleryImages} />
-
-      {/* <div className={styles.grid}>
-        {galleryImages.map((image) => {
-          if (!image.image) return null;
-          const thumbnail = urlFor(image.image)
-            .width(400)
-            .height(250)
-            .auto("format")
-            .url();
-          const full = urlFor(image.image).auto("format").url();
-
-          return (
-            <div
-              key={image._id}
-              onClick={() => setSelectedImage(full)}
-              className={styles.imageWrapper}
-            >
-              <Image
-                src={thumbnail}
-                alt={image.caption || "Gallery Image"}
-                width={400}
-                height={250}
-                className={styles.image}
-              />
-            </div>
-          );
-        })}
-      </div>
-
-      {selectedImage && (
-        <div
-          className={styles.modalOverlay}
-          onClick={() => setSelectedImage(null)}
-        >
-          <Image
-            src={selectedImage}
-            alt="Large view" // TODO: Add alt text based on image data
-            width={800}
-            height={600}
-            className={styles.modalImage}
-            style={{ objectFit: "contain", cursor: "pointer" }}
-            priority
-          />
-        </div>
-      )} */}
     </main>
   );
 };
