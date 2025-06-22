@@ -6,6 +6,7 @@ import { client } from "../sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { PortableText, PortableTextBlock } from "@portabletext/react";
 import { Partner } from "./types";
+import { Gallery } from "./gallery/Gallery";
 
 interface HomePage {
   heroMedia?: {
@@ -150,61 +151,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Gallery Images Section */}
-      {featuredGalleryImages && featuredGalleryImages.length > 0 && (
-        <section className="mx-auto max-w-5xl p-8">
-          <h2 className="text-2xl font-bold mb-6">Featured Gallery</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {featuredGalleryImages.map((img) => {
-              const thumbUrl = urlFor(img.image)
-                .width(400)
-                .height(250)
-                .auto("format")
-                .url();
-
-              const fullUrl = urlFor(img.image).auto("format").url();
-
-              return (
-                <div
-                  key={img._id}
-                  className="cursor-pointer rounded-lg overflow-hidden shadow hover:opacity-80 transition-opacity"
-                  onClick={() => setModalImageUrl(fullUrl)}
-                >
-                  <Image
-                    src={thumbUrl}
-                    alt={img.caption || "Featured image"}
-                    width={400}
-                    height={250}
-                    style={{ objectFit: "cover" }}
-                    placeholder="blur"
-                    blurDataURL={urlFor(img.image)
-                      .width(400)
-                      .height(250)
-                      .blur(20)
-                      .url()}
-                    loading="lazy"
-                  />
-                  {img.caption && (
-                    <p className="text-sm text-center mt-2 text-gray-600">
-                      {img.caption}
-                    </p>
-                  )}
-                  {img.photoCredit && (
-                    <p className="text-xs text-center mt-1 text-gray-400 italic">
-                      {img.photoCredit}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
       {/* Featured Event Section */}
       {featuredEvent && (
         <section className="mx-auto max-w-3xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Featured Event</h2>
+          <h2 className="text-2xl font-bold mb-4">Next Up</h2>
           <a
             href={`/events/${featuredEvent.slug}`}
             className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
@@ -239,10 +189,21 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Featured Gallery Images Section */}
+
+      {featuredGalleryImages && featuredGalleryImages.length > 0 && (
+        <Gallery
+          galleryImages={featuredGalleryImages.map((img) => ({
+            ...img,
+            tags: img.tags || [],
+          }))}
+        />
+      )}
+
       {/* Featured Blog Posts Section */}
       {featuredPosts && featuredPosts.length > 0 && (
         <section className="mx-auto max-w-3xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Featured Blog Posts</h2>
+          <h2 className="text-2xl font-bold mb-4">Blog Highlights</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {featuredPosts.map((post) => (
               <a
@@ -295,8 +256,8 @@ export default function HomePage() {
       {/* Foundation Partners Section */}
       {foundationPartners && foundationPartners.length > 0 && (
         <section className="mx-auto max-w-5xl p-8">
-          <h2 className="text-2xl font-bold mb-6">Our Partners</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center">
+          <h2 className="text-2xl font-bold mb-6 text-center">Our Partners</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 items-center">
             {foundationPartners.map((partner: Partner) => (
               <a
                 key={partner._id}

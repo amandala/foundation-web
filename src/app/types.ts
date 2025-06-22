@@ -1,4 +1,5 @@
 import { PortableTextBlock } from "@portabletext/react";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 export type Event = {
   _id: string;
@@ -17,14 +18,6 @@ export type Post = {
   description: string;
   publishedAt: string;
   imageUrl?: string;
-};
-
-export type GalleryImage = {
-  _id: string;
-  image: { asset: { _ref: string } };
-  caption?: string;
-  photoCredit?: string;
-  tags?: string[];
 };
 
 export type Partner = {
@@ -52,4 +45,19 @@ export type HomePage = {
 export type SocialLink = {
   type: string;
   url: string;
+};
+
+export type GalleryImage = {
+  _id: string;
+  image: SanityImageSource;
+  caption?: string;
+  photoCredit?: string;
+  tags: string[];
+};
+
+export type Tag = {
+  _id: string;
+  name: string;
+  slug: { current: string };
+  description?: string;
 };

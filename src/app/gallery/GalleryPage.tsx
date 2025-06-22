@@ -3,28 +3,11 @@
 import styles from "./styles.module.scss";
 
 import React, { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { client } from "../../sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-
-type GalleryImage = {
-  _id: string;
-  image: SanityImageSource;
-  tag: string;
-  tags: string[];
-};
-
-type Tag = {
-  _id: string;
-  name: string;
-  slug: { current: string };
-  description?: string;
-};
-
-const builder = imageUrlBuilder(client);
-const urlFor = (source: SanityImageSource) => builder.image(source);
+import { GalleryImage, Tag } from "../types";
+import { Gallery } from "./Gallery";
 
 const fetchGalleryImages = async (
   tagSlugs: string[] = []
@@ -63,7 +46,6 @@ const GalleryPage = () => {
 
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchGalleryImages(tagParams).then(setGalleryImages);
@@ -140,7 +122,9 @@ const GalleryPage = () => {
         </div>
       )}
 
-      <div className={styles.grid}>
+      <Gallery galleryImages={galleryImages} />
+
+      {/* <div className={styles.grid}>
         {galleryImages.map((image) => {
           if (!image.image) return null;
           const thumbnail = urlFor(image.image)
@@ -158,7 +142,7 @@ const GalleryPage = () => {
             >
               <Image
                 src={thumbnail}
-                alt={image.tag}
+                alt={image.caption || "Gallery Image"}
                 width={400}
                 height={250}
                 className={styles.image}
@@ -175,7 +159,7 @@ const GalleryPage = () => {
         >
           <Image
             src={selectedImage}
-            alt="Large view"
+            alt="Large view" // TODO: Add alt text based on image data
             width={800}
             height={600}
             className={styles.modalImage}
@@ -183,7 +167,7 @@ const GalleryPage = () => {
             priority
           />
         </div>
-      )}
+      )} */}
     </main>
   );
 };

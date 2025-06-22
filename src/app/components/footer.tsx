@@ -3,18 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { client } from "@/sanity/client";
-// import Image from "next/image";
+import { SocialLink } from "../types";
 
 type FooterData = {
   contactEmail?: string;
   socialLinks?: SocialLink[];
 };
-
-// import imageUrlBuilder from "@sanity/image-url";
-// import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { SocialLink } from "../types";
-// const builder = imageUrlBuilder(client);
-// const urlFor = (source: SanityImageSource) => builder.image(source);
 
 export default function Footer() {
   const [data, setData] = useState<FooterData | null>(null);
@@ -38,12 +32,12 @@ export default function Footer() {
   if (!data) return null;
 
   return (
-    <footer className="bg-gray-100 border-t border-gray-300 mt-16 py-8 px-4 text-sm text-gray-700">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-6">
-        {/* Nav */}
-        <div>
-          <h4 className="font-semibold mb-1">Navigation</h4>
-          <ul className="space-y-1">
+    <footer className="bg-white border-t border-white mt-16  p-8 text-sm text-gray-700">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-6 text-center md:text-left">
+        {/* Navigation Section */}
+        <div className="flex flex-col items-center md:items-start">
+          <h4 className="font-semibold mb-2 text-2xl">Navigation</h4>
+          <ul className="space-y-2">
             <li>
               <Link href="/blog" className="hover:underline">
                 Blog
@@ -62,26 +56,18 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Social Links */}
+        {/* Social Links Section */}
         {data.socialLinks && data.socialLinks.length > 0 && (
-          <div>
-            <h4 className="font-semibold mb-1">Follow</h4>
+          <div className="flex flex-col items-center md:items-start">
+            <h4 className="font-semibold mb-2 text-2xl">Follow</h4>
             <ul className="space-y-2">
               {data.socialLinks.map((link, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  {/* {link.icon?.asset && (
-                    <Image
-                      src={urlFor(link.icon).width(20).height(20).url()}
-                      alt={link.type}
-                      width={20}
-                      height={20}
-                    />
-                  )} */}
+                <li key={i}>
                   <a
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="hover:underline"
                   >
                     {link.type}
                   </a>
@@ -91,14 +77,11 @@ export default function Footer() {
           </div>
         )}
 
-        {/* Contact */}
+        {/* Contact Section */}
         {data.contactEmail && (
-          <div>
-            <h4 className="font-semibold mb-1">Contact</h4>
-            <a
-              href={`mailto:${data.contactEmail}`}
-              className="text-blue-600 hover:underline"
-            >
+          <div className="flex flex-col items-center md:items-start">
+            <h4 className="font-semibold mb-2 text-2xl">Contact</h4>
+            <a href={`mailto:${data.contactEmail}`} className="hover:underline">
               {data.contactEmail}
             </a>
           </div>

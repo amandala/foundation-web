@@ -7,7 +7,7 @@ export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white p-4 flex justify-between items-center max-w-7xl mx-auto relative">
+    <header className="bg-white p-8 flex justify-between items-center max-w-7xl mx-auto relative">
       <Link href="/">
         <div className="text-xl font-bold">Foundation Collective</div>
       </Link>
@@ -16,17 +16,29 @@ export default function Nav() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 text-gray-700 font-semibold">
           <li>
-            <Link href="/gallery" className="hover:text-blue-600">
+            <Link
+              href="/gallery"
+              className="hover:text-blue-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
               Gallery
             </Link>
           </li>
           <li>
-            <Link href="/events" className="hover:text-blue-600">
+            <Link
+              href="/events"
+              className="hover:text-blue-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
               Events
             </Link>
           </li>
           <li>
-            <Link href="/blog" className="hover:text-blue-600">
+            <Link
+              href="/blog"
+              className="hover:text-blue-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
               Blog
             </Link>
           </li>
@@ -66,7 +78,10 @@ export default function Nav() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <ul className="flex flex-col absolute top-full right-0 mt-2 bg-white w-40 md:hidden z-50">
+          <ul
+            className="flex flex-col absolute top-full right-0 bg-white w-40 md:hidden z-50 border-4"
+            style={{ borderColor: "var(--color-border)" }}
+          >
             <li>
               <Link
                 href="/gallery"
