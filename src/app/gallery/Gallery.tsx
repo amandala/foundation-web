@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "../../sanity/client";
@@ -14,6 +14,8 @@ export const Gallery = ({
   galleryImages: GalleryImage[];
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const builder = imageUrlBuilder(client);
   const urlFor = (source: SanityImageSource) => builder.image(source);
@@ -34,7 +36,7 @@ export const Gallery = ({
     setSelectedIndex(null);
   }, []);
 
-  // Arrow key navigation
+  // Keyboard arrow & escape support
   useEffect(() => {
     if (selectedIndex === null) return;
 
@@ -47,6 +49,27 @@ export const Gallery = ({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex, handleNext, handlePrev, handleClose]);
+
+  // Swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    if (touchStartX.current === null || touchEndX.current === null) return;
+
+    const diff = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0)
+        handleNext(); // swiped left
+      else handlePrev(); // swiped right
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   return (
     <div>
@@ -83,7 +106,12 @@ export const Gallery = ({
       </div>
 
       {selectedIndex !== null && (
-        <div className={styles.modalOverlay} onClick={handleClose}>
+        <div
+          className={styles.modalOverlay}
+          onClick={handleClose}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <div
             className="relative max-w-[90vw] max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
@@ -100,6 +128,7 @@ export const Gallery = ({
               style={{ objectFit: "contain" }}
               priority
             />
+
             {/* Caption & Credit */}
             <div className="text-center text-white mt-4">
               {galleryImages[selectedIndex].caption && (
