@@ -5,18 +5,12 @@
   min-height: 100vh;
 }
 
-.title {
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 1rem;
-}
-
 .otherTags,
 .specialTagRow {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 8px;
 }
 
 .tagButton {
@@ -48,17 +42,11 @@
   border: 1px solid #ef4444; // red-500
   background-color: transparent;
   color: #ef4444;
-  transition: all 0.3s ease;
 
   &:hover {
     background-color: #ef4444;
     color: white;
   }
-}
-
-.activeFilters {
-  margin-left: 12px;
-  display: inline;
 }
 
 .imageGroup {

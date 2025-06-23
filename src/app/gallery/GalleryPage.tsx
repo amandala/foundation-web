@@ -96,21 +96,8 @@ const GalleryPage = () => {
 
   return (
     <main className={`${styles.container} ${styles.main}`}>
-      <h1 className={styles.title}>
-        <span className="text-4xl font-bold">Gallery </span>
-        {tagParams.length > 0 && (
-          <span className={styles.activeFilters}>
-            Filtering by: <strong>{tagParams.join(" + ")}</strong>
-          </span>
-        )}
-        {tagParams.length > 0 && (
-          <button onClick={clearFilters} className={styles.clearButton}>
-            Clear Filters
-          </button>
-        )}
-      </h1>
-
-      <div className={styles.tagCloud}>
+      <h1 className="text-4xl font-bold">Gallery</h1>
+      <div className="my-4">
         {/* Special Tags Row */}
         <div className={styles.specialTagRow}>
           {specialTags.map((tag) => {
@@ -146,6 +133,22 @@ const GalleryPage = () => {
             );
           })}
         </div>
+      </div>
+
+      <div
+        className="my-2"
+        style={{ visibility: tagParams.length > 0 ? "visible" : "hidden" }}
+      >
+        {
+          <span>
+            Filtering by: <strong>{tagParams.join(" + ")}</strong>
+          </span>
+        }
+        {
+          <button onClick={clearFilters} className={styles.clearButton}>
+            Clear Filters
+          </button>
+        }
       </div>
 
       <Gallery galleryImages={galleryImages} />
