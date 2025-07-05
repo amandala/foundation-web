@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { client } from "../../sanity/client";
 import { GalleryImage, Tag } from "../types";
 import { Gallery } from "./Gallery";
+import { PageHeader } from "../components/PageHeader/PageHeader";
 
 const fetchGalleryImages = async (
   tagSlugs: string[] = []
@@ -96,9 +97,11 @@ const GalleryPage = () => {
 
   return (
     <main className={`${styles.container} ${styles.main}`}>
-      <h1 className="text-4xl font-bold">Gallery</h1>
+      <PageHeader title="Gallery" />
       <div className="my-4">
         {/* Special Tags Row */}
+        <h2 className="text-2xl font-bold mb-4">Filters</h2>
+
         <div className={styles.specialTagRow}>
           {specialTags.map((tag) => {
             const isActive = tagParams.includes(tag.slug.current);

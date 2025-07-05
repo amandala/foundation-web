@@ -7,6 +7,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import { PortableText, PortableTextBlock } from "@portabletext/react";
 import { Partner } from "./types";
 import { Gallery } from "./gallery/Gallery";
+import styles from "./page.module.scss";
 
 interface HomePage {
   heroMedia?: {
@@ -123,187 +124,196 @@ export default function HomePage() {
   } = data;
 
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      {heroMedia?.type === "image" && heroMedia.image && (
-        <section className="relative">
-          <Image
-            src={urlFor(heroMedia.image).width(1200).url()}
-            alt="Hero"
-            width={1200}
-            height={400}
-            className="w-full h-auto object-cover"
-            placeholder="blur"
-            blurDataURL={urlFor(heroMedia.image).width(1200).blur(20).url()}
-            loading="eager"
-            quality={80}
-          />
-        </section>
-      )}
-      {heroMedia?.type === "video" && heroMedia.video && (
-        <section className="relative">
-          <video className="w-full h-auto" loop muted autoPlay playsInline>
-            <source src={urlForFile(heroMedia.video)} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </section>
-      )}
+    <>
+      <main className="relative min-h-screen z-10">
+        {/* Hero Section */}
+        {heroMedia?.type === "image" && heroMedia.image && (
+          <section className="relative">
+            <Image
+              src={urlFor(heroMedia.image).width(1200).url()}
+              alt="Hero"
+              width={1200}
+              height={400}
+              className="w-full h-auto object-cover"
+              placeholder="blur"
+              blurDataURL={urlFor(heroMedia.image).width(1200).blur(20).url()}
+              loading="eager"
+              quality={80}
+            />
+          </section>
+        )}
+        {heroMedia?.type === "video" && heroMedia.video && (
+          <section className="relative">
+            <video className="w-full h-auto" loop muted autoPlay playsInline>
+              <source src={urlForFile(heroMedia.video)} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </section>
+        )}
 
-      {/* Intro Section */}
-      <section className="mx-auto max-w-3xl p-8">
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Foundation Collective
-        </h1>
-        <div className="prose mx-auto">
-          <PortableText value={introText || []} />
-        </div>
-      </section>
+        {/* Intro Section */}
+        <section className="mx-auto relative py-40 mt-24">
+          <div className={styles.textBg}>FOUNDATION COLLECTIVE</div>
 
-      {/* Featured Event Section */}
-      {featuredEvent && (
-        <section className="mx-auto max-w-3xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Next Up</h2>
-          <a
-            href={`/events/${featuredEvent.slug}`}
-            className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
-          >
-            {featuredEvent.coverImage && (
-              <Image
-                src={urlFor(featuredEvent.coverImage).width(800).url()}
-                alt={featuredEvent.name}
-                width={800}
-                height={400}
-                className="w-full h-[400px] object-cover"
-                placeholder="blur"
-                blurDataURL={urlFor(featuredEvent.coverImage)
-                  .width(800)
-                  .blur(20)
-                  .url()}
-                loading="lazy"
-              />
-            )}
-            <div className="p-4">
-              <h3 className="text-xl font-semibold">{featuredEvent.name}</h3>
-              <p className="text-gray-600">
-                Start: {new Date(featuredEvent.startDate).toLocaleString()}{" "}
-                <br />
-                End: {new Date(featuredEvent.endDate).toLocaleString()}
-              </p>
-              <div className="prose">
-                <PortableText value={featuredEvent.description} />
-              </div>
+          <div className="relative z-10 mx-auto max-w-3xl text-center">
+            <h1 className="text-4xl font-bold text-center mb-8">
+              Foundation Collective
+            </h1>
+            <div className="prose mx-auto p-8">
+              <PortableText value={introText || []} />
             </div>
-          </a>
+          </div>
         </section>
-      )}
 
-      {/* Featured Gallery Images Section */}
-
-      {featuredGalleryImages && featuredGalleryImages.length > 0 && (
-        <div className="py-12">
-          <Gallery
-            galleryImages={featuredGalleryImages.map((img) => ({
-              ...img,
-              tags: img.tags || [],
-            }))}
-          />
-        </div>
-      )}
-
-      {/* Featured Blog Posts Section */}
-      {featuredPosts && featuredPosts.length > 0 && (
-        <section className="mx-auto max-w-3xl p-8">
-          <h2 className="text-2xl font-bold mb-4">Blog Highlights</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {featuredPosts.map((post) => (
-              <a
-                key={post._id}
-                href={`/blog/${post.slug.current}`}
-                className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
-              >
-                {post.imageUrl && (
-                  <Image
-                    src={post.imageUrl}
-                    alt={post.title}
-                    width={800}
-                    height={300}
-                    className="w-full h-[300px] object-cover"
-                    placeholder="blur"
-                    blurDataURL={post.imageUrl}
-                    loading="lazy"
-                  />
-                )}
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold">{post.title}</h3>
-                  <p className="text-gray-600">
-                    Published: {new Date(post.publishedAt).toLocaleDateString()}
-                  </p>
-                  <p className="text-gray-700">{post.description}</p>
+        {/* Featured Event Section */}
+        {featuredEvent && (
+          <section className="mx-auto max-w-3xl p-8">
+            <h2 className="text-2xl font-bold mb-4">Next Up</h2>
+            <a
+              href={`/events/${featuredEvent.slug}`}
+              className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
+            >
+              {featuredEvent.coverImage && (
+                <Image
+                  src={urlFor(featuredEvent.coverImage).width(800).url()}
+                  alt={featuredEvent.name}
+                  width={800}
+                  height={400}
+                  className="w-full h-[400px] object-cover"
+                  placeholder="blur"
+                  blurDataURL={urlFor(featuredEvent.coverImage)
+                    .width(800)
+                    .blur(20)
+                    .url()}
+                  loading="lazy"
+                />
+              )}
+              <div className="p-4">
+                <h3 className="text-xl font-semibold">{featuredEvent.name}</h3>
+                <p className="text-gray-600">
+                  Start: {new Date(featuredEvent.startDate).toLocaleString()}{" "}
+                  <br />
+                  End: {new Date(featuredEvent.endDate).toLocaleString()}
+                </p>
+                <div className="prose">
+                  <PortableText value={featuredEvent.description} />
                 </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
+              </div>
+            </a>
+          </section>
+        )}
 
-      {/* Modal overlay */}
-      {modalImageUrl && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer"
-          onClick={() => setModalImageUrl(null)}
-        >
-          <Image
-            src={modalImageUrl}
-            alt="Full size image"
-            width={800}
-            height={600}
-            style={{ objectFit: "contain" }}
-            priority
-          />
-        </div>
-      )}
+        {/* Featured Gallery Images Section */}
 
-      {/* Foundation Partners Section */}
-      {foundationPartners && foundationPartners.length > 0 && (
-        <section className="mx-auto max-w-5xl p-8">
-          <h2 className="text-2xl font-bold mb-6 text-center">Our Partners</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 items-center">
-            {foundationPartners.map((partner: Partner) => (
-              <a
-                key={partner._id}
-                href={partner.link || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
-                title={partner.name}
-              >
-                {partner.logo ? (
-                  <Image
-                    src={urlFor(partner.logo)
-                      .width(200)
-                      .height(100)
-                      .auto("format")
-                      .url()}
-                    alt={partner.name}
-                    width={200}
-                    height={100}
-                    style={{ objectFit: "contain" }}
-                    placeholder="blur"
-                    blurDataURL={urlFor(partner.logo)
-                      .width(200)
-                      .height(100)
-                      .blur(20)
-                      .url()}
-                    loading="lazy"
-                  />
-                ) : (
-                  <span className="text-gray-700">{partner.name}</span>
-                )}
-              </a>
-            ))}
+        {featuredGalleryImages && featuredGalleryImages.length > 0 && (
+          <div className="py-12">
+            <Gallery
+              galleryImages={featuredGalleryImages.map((img) => ({
+                ...img,
+                tags: img.tags || [],
+              }))}
+            />
           </div>
-        </section>
-      )}
-    </main>
+        )}
+
+        {/* Featured Blog Posts Section */}
+        {featuredPosts && featuredPosts.length > 0 && (
+          <section className="mx-auto max-w-3xl p-8">
+            <h2 className="text-2xl font-bold mb-4">Blog Highlights</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {featuredPosts.map((post) => (
+                <a
+                  key={post._id}
+                  href={`/blog/${post.slug.current}`}
+                  className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
+                >
+                  {post.imageUrl && (
+                    <Image
+                      src={post.imageUrl}
+                      alt={post.title}
+                      width={800}
+                      height={300}
+                      className="w-full h-[300px] object-cover"
+                      placeholder="blur"
+                      blurDataURL={post.imageUrl}
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold">{post.title}</h3>
+                    <p className="text-gray-600">
+                      Published:{" "}
+                      {new Date(post.publishedAt).toLocaleDateString()}
+                    </p>
+                    <p className="text-gray-700">{post.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Modal overlay */}
+        {modalImageUrl && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer"
+            onClick={() => setModalImageUrl(null)}
+          >
+            <Image
+              src={modalImageUrl}
+              alt="Full size image"
+              width={800}
+              height={600}
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          </div>
+        )}
+
+        {/* Foundation Partners Section */}
+        {foundationPartners && foundationPartners.length > 0 && (
+          <section className="mx-auto max-w-5xl p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Our Partners
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 items-center">
+              {foundationPartners.map((partner: Partner) => (
+                <a
+                  key={partner._id}
+                  href={partner.link || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
+                  title={partner.name}
+                >
+                  {partner.logo ? (
+                    <Image
+                      src={urlFor(partner.logo)
+                        .width(200)
+                        .height(100)
+                        .auto("format")
+                        .url()}
+                      alt={partner.name}
+                      width={200}
+                      height={100}
+                      style={{ objectFit: "contain" }}
+                      placeholder="blur"
+                      blurDataURL={urlFor(partner.logo)
+                        .width(200)
+                        .height(100)
+                        .blur(20)
+                        .url()}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-gray-700">{partner.name}</span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+    </>
   );
 }

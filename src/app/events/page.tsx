@@ -7,6 +7,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Link from "next/link";
 import Image from "next/image";
 import { Event } from "../types";
+import { PageHeader } from "../components/PageHeader/PageHeader";
 
 const EVENTS_QUERY = `*[_type == "event"] {
   _id,
@@ -105,7 +106,7 @@ export default async function EventsPage() {
 
   return (
     <main className="container mx-auto min-h-screen max-w-5xl p-8">
-      <h1 className="text-4xl font-bold mb-8">Events</h1>
+      <PageHeader title="Events" />
 
       <section className="mb-12">
         <h2 className="text-3xl font-semibold mb-6">Upcoming Events</h2>

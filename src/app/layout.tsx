@@ -1,5 +1,5 @@
 // Removed the import of Metadata as it is not exported from "next"
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anton, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import Nav from "./components/nav";
@@ -7,14 +7,17 @@ import Nav from "./components/nav";
 import "./globals.css";
 import Footer from "./components/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const anton = Anton({
+  variable: "--font-anton",
+  weight: "400",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+  fallback: ["Helvetica", "sans-serif"],
 });
 
 export const metadata = {
@@ -30,9 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Analytics />
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={` ${anton.variable} ${inter} antialiased`}>
         <Nav />
         {children}
         <Footer />

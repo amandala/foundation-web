@@ -3,6 +3,7 @@ import { type SanityDocument } from "next-sanity";
 import Image from "next/image";
 
 import { client } from "@/sanity/client";
+import { PageHeader } from "../components/PageHeader/PageHeader";
 
 const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc)[0...10] {
   _id,
@@ -31,7 +32,7 @@ export default async function BlogPage() {
 
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8">
-      <h1 className="text-4xl font-bold mb-8">Foundation Blog</h1>
+      <PageHeader title="Blog" />
       <ul className="flex flex-col gap-y-4">
         {posts.map((post) => (
           <li className="hover:underline" key={post._id}>

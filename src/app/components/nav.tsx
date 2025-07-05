@@ -9,7 +9,7 @@ export default function Nav() {
   return (
     <header className="bg-white p-8 flex justify-between items-center max-w-7xl mx-auto relative">
       <Link href="/">
-        <div className="text-xl font-bold">Foundation Collective</div>
+        <h1 className="text-xl font-bold">Foundation Collective</h1>
       </Link>
 
       <nav>
@@ -21,7 +21,7 @@ export default function Nav() {
               className="hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              Gallery
+              <h2>Gallery</h2>
             </Link>
           </li>
           <li>
@@ -30,7 +30,7 @@ export default function Nav() {
               className="hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              Events
+              <h2>Events</h2>
             </Link>
           </li>
           <li>
@@ -39,7 +39,7 @@ export default function Nav() {
               className="hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              Blog
+              <h2>Blog</h2>
             </Link>
           </li>
         </ul>
@@ -88,7 +88,7 @@ export default function Nav() {
                 className="block px-4 py-2 hover:bg-blue-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Gallery
+                <h2>Gallery</h2>
               </Link>
             </li>
             <li>
@@ -97,7 +97,7 @@ export default function Nav() {
                 className="block px-4 py-2 hover:bg-blue-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Events
+                <h2>Events</h2>
               </Link>
             </li>
             <li>
@@ -106,7 +106,7 @@ export default function Nav() {
                 className="block px-4 py-2 hover:bg-blue-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Blog
+                <h2>Blog</h2>
               </Link>
             </li>
           </ul>

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Partner } from "@/app/types";
 import { Gallery } from "@/app/gallery/Gallery";
+import { PageHeader } from "@/app/components/PageHeader/PageHeader";
 
 const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   _id,
@@ -74,10 +75,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
-      <Link href="/" className="hover:underline">
-        ← Back to home
-      </Link>
-
+      <PageHeader title={event.name} />
       {eventImageUrl && (
         <Image
           src={eventImageUrl}
@@ -88,7 +86,6 @@ export default async function PostPage({ params }: PostPageProps) {
         />
       )}
 
-      <h1 className="text-4xl font-bold mb-4">{event.title}</h1>
       <div className="prose">
         <p className="text-1xl font-bold mb-4">
           Starts: {new Date(event.startDate).toLocaleDateString()}
