@@ -10,6 +10,8 @@ import { Partner } from "@/app/types";
 import { Gallery } from "@/app/gallery/Gallery";
 import { PageHeader } from "@/app/components/PageHeader/PageHeader";
 
+import { MapPinIcon } from "@heroicons/react/24/solid";
+
 const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   _id,
   name,
@@ -18,6 +20,8 @@ const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   description,
   startDate,
   endDate,
+  address, 
+  mapLink,
   featuredGalleryImages[]->{
     _id,
     image,
@@ -74,7 +78,7 @@ export default async function PostPage({ params }: PostPageProps) {
     : null;
 
   return (
-    <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
+    <main className="container mx-auto min-h-screen max-w-4xl p-8 flex flex-col gap-4">
       <PageHeader title={event.name} />
       {eventImageUrl && (
         <Image
@@ -88,11 +92,37 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <div className="prose">
         <p className="text-1xl font-bold mb-4">
-          Starts: {new Date(event.startDate).toLocaleDateString()}
+          {new Date(event.startDate).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+
+          <span> - </span>
+
+          {new Date(event.endDate).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+          })}
         </p>
-        <p className="text-1xl font-bold mb-4">
-          Ends: {new Date(event.endDate).toLocaleDateString()}
-        </p>
+
+        <div>
+          <Link
+            target="_blank"
+            href={event.mapLink}
+            className="hover:underline inline-flex items-center gap-1"
+          >
+            <MapPinIcon className="w-5 h-5 text-gray-600 " />
+            <span>{event.address}</span>
+          </Link>
+        </div>
+      </div>
+      <div>
         {Array.isArray(event.description) && (
           <div className="pt-4 space-y-4">
             <PortableText value={event.description} />
