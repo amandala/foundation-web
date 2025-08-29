@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Partner } from "@/app/types";
 import { Gallery } from "@/app/gallery/Gallery";
-import { PageHeader } from "@/app/components/PageHeader/PageHeader";
+import { EventTitle } from "@/app/components/EventTitle/EventTitle";
 
 import { MapPinIcon } from "@heroicons/react/24/solid";
 
@@ -48,13 +48,13 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-interface PostPageProps {
+interface EventPageProps {
   params: Promise<{
     slug: string;
   }>;
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function EventPage({ params }: EventPageProps) {
   const resolvedParams = await params;
   const event = await client.fetch(EVENT_QUERY, { slug: resolvedParams.slug });
 
@@ -79,7 +79,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <main className="container mx-auto min-h-screen max-w-4xl p-8 flex flex-col gap-4">
-      <PageHeader title={event.name} />
+      <EventTitle title={event.name} />
       {eventImageUrl && (
         <Image
           src={eventImageUrl}

@@ -23,7 +23,7 @@ export type Post = {
 export type Partner = {
   _id: string;
   name: string;
-  logo: { asset: { _ref: string } };
+  image: { asset: { _ref: string } };
   link?: string;
   order?: number;
 };

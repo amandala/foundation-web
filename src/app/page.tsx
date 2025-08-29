@@ -84,7 +84,7 @@ const query = `*[_type == "homePage"][0]{
   foundationPartners[]->{
     _id,
     name,
-    logo,
+    image,
     link,
     order
   }
@@ -152,7 +152,7 @@ export default function HomePage() {
         )}
 
         {/* Intro Section */}
-        <section className="mx-auto relative py-40 mt-24">
+        <section className="mx-auto relative py-12 mt-24">
           <div className={styles.textBg}>FOUNDATION COLLECTIVE</div>
 
           <div className="relative z-10 mx-auto max-w-3xl text-center">
@@ -168,7 +168,6 @@ export default function HomePage() {
         {/* Featured Event Section */}
         {featuredEvent && (
           <section className="mx-auto max-w-3xl p-8">
-            <h2 className="text-2xl font-bold mb-4">Next Up</h2>
             <a
               href={`/events/${featuredEvent.slug}`}
               className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
@@ -286,21 +285,21 @@ export default function HomePage() {
                   className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
                   title={partner.name}
                 >
-                  {partner.logo ? (
+                  {partner.image ? (
                     <Image
-                      src={urlFor(partner.logo)
+                      src={urlFor(partner.image)
                         .width(200)
-                        .height(100)
+                        .height(200)
                         .auto("format")
                         .url()}
                       alt={partner.name}
                       width={200}
-                      height={100}
+                      height={200}
                       style={{ objectFit: "contain" }}
                       placeholder="blur"
-                      blurDataURL={urlFor(partner.logo)
+                      blurDataURL={urlFor(partner.image)
                         .width(200)
-                        .height(100)
+                        .height(200)
                         .blur(20)
                         .url()}
                       loading="lazy"

@@ -15,9 +15,9 @@ const fetchGalleryImages = async (
   const tagCount = tagSlugs.length;
   const query =
     tagCount === 0
-      ? `*[_type == "galleryImage"]{ _id, image, "tags": tags[]->slug.current, caption }`
+      ? `*[_type == "galleryImage"]{ _id, image, "tags": tags[]->slug.current, caption, photoCredit }`
       : `*[_type == "galleryImage" && count((tags[]->slug.current)[@ in $tagSlugs]) == $tagCount]{
-        _id, image, "tags": tags[]->slug.current, caption
+        _id, image, "tags": tags[]->slug.current, caption, photoCredit
       }`;
 
   const results = await client.fetch(query, { tagSlugs, tagCount });
@@ -28,6 +28,7 @@ const fetchGalleryImages = async (
     tag: item.tags?.[0] || "untagged",
     tags: item.tags || [],
     caption: item.caption || "",
+    photoCredit: item.photoCredit || "",
   }));
 };
 
@@ -137,7 +138,6 @@ const GalleryPage = () => {
           })}
         </div>
       </div>
-
       <div
         className="my-2"
         style={{ visibility: tagParams.length > 0 ? "visible" : "hidden" }}
@@ -153,9 +153,7 @@ const GalleryPage = () => {
           </button>
         }
       </div>
-
       <Gallery galleryImages={galleryImages} />
-
       {activeTags.length > 0 && (
         <div>
           {activeTags.map(

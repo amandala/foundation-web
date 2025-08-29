@@ -10,15 +10,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .tagButton {
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  border: 1px solid #d1d5db; // gray-300
-  background-color: #e5e7eb; // gray-200
-  color: #374151; // gray-700
+  border: 1px solid var(--background);
+  background-color: var(--foreground);
+  color: var(--background);
   transition: all 0.3s ease;
   cursor: pointer;
   user-select: none;
@@ -29,7 +29,7 @@
 }
 
 .activeTag {
-  background-color: #2563eb; // blue-600
+  background-color: #2563eb;
   color: white;
   border-color: #2563eb;
 }

@@ -104,7 +104,6 @@ export const Gallery = ({
           );
         })}
       </div>
-
       {selectedIndex !== null && (
         <div
           className={styles.modalOverlay}
@@ -130,15 +129,15 @@ export const Gallery = ({
             />
 
             {/* Caption & Credit */}
-            <div className="text-center text-white mt-4">
-              {galleryImages[selectedIndex].caption && (
-                <p className="text-lg">
-                  {galleryImages[selectedIndex].caption}
+            <div className="text-center mt-4">
+              {galleryImages[selectedIndex].photoCredit && (
+                <p className="text-lg text-white">
+                  📸 {galleryImages[selectedIndex].photoCredit}
                 </p>
               )}
-              {galleryImages[selectedIndex].photoCredit && (
-                <p className="text-sm italic text-gray-300">
-                  {galleryImages[selectedIndex].photoCredit}
+              {galleryImages[selectedIndex].caption && (
+                <p className="text-lg text-white">
+                  {galleryImages[selectedIndex].caption}
                 </p>
               )}
             </div>

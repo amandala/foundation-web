@@ -43,6 +43,15 @@ button svg {
   color: var(--foreground);
 }
 
+p {
+  line-height: 1.6;
+  margin-bottom: 1.2em;
+}
+
+p.text-white {
+  color: #ffffff !important;
+}
+
 h1,
 h2,
 h3,
