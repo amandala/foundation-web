@@ -1,4 +1,3 @@
-// Removed the import of Metadata as it is not exported from "next"
 import { Anton, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -6,6 +5,7 @@ import Nav from "./components/nav";
 
 import "./globals.css";
 import Footer from "./components/footer";
+import Script from "next/script";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -32,6 +32,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Script id="disable-right-click" strategy="afterInteractive">
+        {`
+            document.addEventListener("contextmenu", function(e) {
+              if (e.target.tagName === "IMG") {
+                e.preventDefault();
+              }
+            });
+          `}
+      </Script>
+
       <Analytics />
       <body className={` ${anton.variable} ${inter} antialiased`}>
         <Nav />
