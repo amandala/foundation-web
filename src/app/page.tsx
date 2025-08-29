@@ -190,9 +190,22 @@ export default function HomePage() {
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{featuredEvent.name}</h3>
                 <p className="text-gray-600">
-                  Start: {new Date(featuredEvent.startDate).toLocaleString()}{" "}
-                  <br />
-                  End: {new Date(featuredEvent.endDate).toLocaleString()}
+                  {new Date(featuredEvent.startDate).toLocaleDateString(
+                    "en-US",
+                    {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                    }
+                  )}
+                  <span> - </span>
+                  {new Date(featuredEvent.endDate).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                  })}
                 </p>
                 <div className="prose">
                   <PortableText value={featuredEvent.description} />
@@ -242,7 +255,11 @@ export default function HomePage() {
                     <h3 className="text-xl font-semibold">{post.title}</h3>
                     <p className="text-gray-600">
                       Published:{" "}
-                      {new Date(post.publishedAt).toLocaleDateString()}
+                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
                     </p>
                     <p className="text-gray-700">{post.description}</p>
                   </div>
@@ -270,6 +287,7 @@ export default function HomePage() {
         )}
 
         {/* Foundation Partners Section */}
+
         {foundationPartners && foundationPartners.length > 0 && (
           <section className="mx-auto max-w-5xl p-8">
             <h2 className="text-2xl font-bold mb-6 text-center">

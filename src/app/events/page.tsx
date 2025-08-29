@@ -90,10 +90,22 @@ export default async function EventsPage() {
                 <div className="p-4">
                   <h2 className="text-xl font-semibold mb-2">{event.name}</h2>
                   <p className="text-gray-600 mb-1">
-                    Start: {new Date(event.startDate).toLocaleDateString()}
+                    Start:{" "}
+                    {new Date(event.startDate).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                    })}
                   </p>
                   <p className="text-gray-600">
-                    End: {new Date(event.endDate).toLocaleDateString()}
+                    End:{" "}
+                    {new Date(event.endDate).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                    })}
                   </p>
                 </div>
               </Link>

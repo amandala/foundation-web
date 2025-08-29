@@ -97,7 +97,6 @@ export default async function EventPage({ params }: EventPageProps) {
             day: "numeric",
             year: "numeric",
             hour: "numeric",
-            minute: "2-digit",
           })}
 
           <span> - </span>
@@ -107,7 +106,6 @@ export default async function EventPage({ params }: EventPageProps) {
             day: "numeric",
             year: "numeric",
             hour: "numeric",
-            minute: "2-digit",
           })}
         </p>
 

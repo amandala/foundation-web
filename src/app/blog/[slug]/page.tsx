@@ -78,7 +78,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
-      <Link href="/" className="hover:underline">
+      <Link href="/blog" className="hover:underline">
         ← Back to posts
       </Link>
 
@@ -95,7 +95,12 @@ export default async function PostPage({ params }: PostPageProps) {
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
       <div className="prose">
         <p className="text-1xl font-bold mb-4">
-          Published: {new Date(post.publishedAt).toLocaleDateString()}
+          Published:{" "}
+          {new Date(post.publishedAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}
         </p>
         {Array.isArray(post.body) && (
           <div className="pt-4 space-y-4">
