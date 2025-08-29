@@ -282,24 +282,32 @@ export default function HomePage() {
                   href={partner.link || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
+                  className="flex justify-center items-center p-4 "
                   title={partner.name}
                 >
                   {partner.image ? (
                     <Image
                       src={urlFor(partner.image)
-                        .width(200)
-                        .height(200)
+                        .width(400) // request higher width for quality
                         .auto("format")
                         .url()}
                       alt={partner.name}
                       width={200}
-                      height={200}
-                      style={{ objectFit: "contain" }}
+                      height={100}
+                      style={{
+                        objectFit: "contain",
+                        width: "100%",
+                        height: "auto",
+                        maxHeight: "100px",
+                        background: "#fff",
+                        padding: "8px",
+                        borderRadius: "8px",
+                        display: "block",
+                      }}
                       placeholder="blur"
                       blurDataURL={urlFor(partner.image)
-                        .width(200)
-                        .height(200)
+                        .width(20)
+                        .height(10)
                         .blur(20)
                         .url()}
                       loading="lazy"
