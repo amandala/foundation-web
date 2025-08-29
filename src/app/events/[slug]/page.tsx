@@ -32,7 +32,7 @@ const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   eventPartners[]->{
     _id,
     name,
-    logo {
+    image {
       asset-> {
         _id,
         url
@@ -146,10 +146,10 @@ export default async function EventPage({ params }: EventPageProps) {
                 className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
                 title={partner.name}
               >
-                {partner.logo ? (
+                {partner.image ? (
                   <Image
                     src={
-                      urlFor(partner.logo)
+                      urlFor(partner.image)
                         ?.width(200)
                         ?.height(100)
                         ?.auto("format")
@@ -161,7 +161,7 @@ export default async function EventPage({ params }: EventPageProps) {
                     style={{ objectFit: "contain" }}
                     placeholder="blur"
                     blurDataURL={
-                      urlFor(partner.logo)
+                      urlFor(partner.image)
                         ?.width(200)
                         ?.height(100)
                         ?.blur(20)
