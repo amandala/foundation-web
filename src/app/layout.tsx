@@ -43,7 +43,7 @@ export default function RootLayout({
       </Script>
 
       <Analytics />
-      <body className={` ${anton.variable} ${inter} antialiased`}>
+      <body className={` ${anton.variable} ${inter.variable} antialiased`}>
         <Nav />
         {children}
         <Footer />
