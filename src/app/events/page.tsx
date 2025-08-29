@@ -52,7 +52,7 @@ export default async function EventsPage() {
     }
 
     return (
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8">
         {eventList.map((event: Event) => {
           const coverUrl = event.coverImage
             ? urlFor(event.coverImage)?.width(600)?.height(400)?.url()
@@ -90,20 +90,17 @@ export default async function EventsPage() {
                 <div className="p-4">
                   <h2 className="text-xl font-semibold mb-2">{event.name}</h2>
                   <p className="text-gray-600 mb-1">
-                    Start:{" "}
                     {new Date(event.startDate).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                      year: "numeric",
                       hour: "numeric",
                     })}
-                  </p>
-                  <p className="text-gray-600">
-                    End:{" "}
+
+                    <span> - </span>
+
                     {new Date(event.endDate).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                      year: "numeric",
                       hour: "numeric",
                     })}
                   </p>
