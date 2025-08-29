@@ -193,17 +193,15 @@ export default function HomePage() {
                   {new Date(featuredEvent.startDate).toLocaleDateString(
                     "en-US",
                     {
-                      month: "long",
+                      month: "short",
                       day: "numeric",
-                      year: "numeric",
                       hour: "numeric",
                     }
                   )}
                   <span> - </span>
                   {new Date(featuredEvent.endDate).toLocaleDateString("en-US", {
-                    month: "long",
+                    month: "short",
                     day: "numeric",
-                    year: "numeric",
                     hour: "numeric",
                   })}
                 </p>
@@ -256,7 +254,7 @@ export default function HomePage() {
                     <p className="text-gray-600">
                       Published:{" "}
                       {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                        month: "long",
+                        month: "short",
                         day: "numeric",
                         year: "numeric",
                       })}

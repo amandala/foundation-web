@@ -93,7 +93,7 @@ export default async function EventPage({ params }: EventPageProps) {
       <div className="prose">
         <p className="text-1xl font-bold mb-4">
           {new Date(event.startDate).toLocaleDateString("en-US", {
-            month: "long",
+            month: "short",
             day: "numeric",
             year: "numeric",
             hour: "numeric",
@@ -102,7 +102,7 @@ export default async function EventPage({ params }: EventPageProps) {
           <span> - </span>
 
           {new Date(event.endDate).toLocaleDateString("en-US", {
-            month: "long",
+            month: "short",
             day: "numeric",
             year: "numeric",
             hour: "numeric",

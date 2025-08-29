@@ -97,7 +97,7 @@ export default async function PostPage({ params }: PostPageProps) {
         <p className="text-1xl font-bold mb-4">
           Published:{" "}
           {new Date(post.publishedAt).toLocaleDateString("en-US", {
-            month: "long",
+            month: "short",
             day: "numeric",
             year: "numeric",
           })}

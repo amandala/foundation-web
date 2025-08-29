@@ -92,7 +92,7 @@ export default async function EventsPage() {
                   <p className="text-gray-600 mb-1">
                     Start:{" "}
                     {new Date(event.startDate).toLocaleDateString("en-US", {
-                      month: "long",
+                      month: "short",
                       day: "numeric",
                       year: "numeric",
                       hour: "numeric",
@@ -101,7 +101,7 @@ export default async function EventsPage() {
                   <p className="text-gray-600">
                     End:{" "}
                     {new Date(event.endDate).toLocaleDateString("en-US", {
-                      month: "long",
+                      month: "short",
                       day: "numeric",
                       year: "numeric",
                       hour: "numeric",

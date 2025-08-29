@@ -41,7 +41,7 @@ export default async function BlogPage() {
                 <h2 className="text-xl font-semibold grow">{post.title}</h2>
                 <p>
                   {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    month: "long",
+                    month: "short",
                     day: "numeric",
                     year: "numeric",
                   })}
