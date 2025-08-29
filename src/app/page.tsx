@@ -299,7 +299,7 @@ export default function HomePage() {
                         width: "100%",
                         height: "auto",
                         maxHeight: "100px",
-                        background: "#fff",
+                        backgroundColor: "#fff",
                         padding: "8px",
                         borderRadius: "8px",
                         display: "block",
