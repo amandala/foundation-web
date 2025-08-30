@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "../../sanity/client";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { GalleryImage } from "../types";
 import styles from "./styles.module.scss";
+import { useSwipeable } from "react-swipeable";
 
 export const Gallery = ({
   galleryImages,
@@ -14,8 +15,6 @@ export const Gallery = ({
   galleryImages: GalleryImage[];
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const touchStartX = useRef<number | null>(null);
-  const touchEndX = useRef<number | null>(null);
 
   const builder = imageUrlBuilder(client);
   const urlFor = (source: SanityImageSource) => builder.image(source);
@@ -50,39 +49,14 @@ export const Gallery = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex, handleNext, handlePrev, handleClose]);
 
-  // Swipe support
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.changedTouches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    touchEndX.current = e.changedTouches[0].clientX;
-    if (touchStartX.current === null || touchEndX.current === null) return;
-
-    const diff = touchStartX.current - touchEndX.current;
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0)
-        handleNext(); // swiped left
-      else handlePrev(); // swiped right
-    }
-
-    touchStartX.current = null;
-    touchEndX.current = null;
-  };
-
-  // Lock scroll when modal is open
-  useEffect(() => {
-    if (selectedIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedIndex]);
+  // Swipe gesture support
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventScrollOnSwipe: true,
+    trackTouch: true,
+    trackMouse: false,
+  });
 
   return (
     <div>
@@ -121,8 +95,7 @@ export const Gallery = ({
         <div
           className={styles.modalOverlay}
           onClick={handleClose}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          {...swipeHandlers}
         >
           <div
             className="relative max-w-[90vw] max-h-[90vh]"
