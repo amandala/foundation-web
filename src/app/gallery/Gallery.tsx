@@ -58,6 +58,17 @@ export const Gallery = ({
     trackMouse: false,
   });
 
+  useEffect(() => {
+    if (selectedIndex !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedIndex]);
+
   return (
     <div>
       <div
