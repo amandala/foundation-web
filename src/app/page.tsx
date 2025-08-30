@@ -205,9 +205,6 @@ export default function HomePage() {
                     hour: "numeric",
                   })}
                 </p>
-                <div className="prose">
-                  <PortableText value={featuredEvent.description} />
-                </div>
               </div>
             </a>
           </section>
@@ -259,7 +256,6 @@ export default function HomePage() {
                         year: "numeric",
                       })}
                     </p>
-                    <p className="text-gray-700">{post.description}</p>
                   </div>
                 </a>
               ))}
