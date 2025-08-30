@@ -140,22 +140,40 @@ export const Gallery = ({
             </div>
 
             {/* Arrows */}
-            <button
-              onClick={handlePrev}
-              className="absolute top-1/2 left-2 transform -translate-y-1/2 
-             text-white text-4xl font-bold hover:text-green-400"
-              aria-label="Previous image"
-            >
-              ‹
-            </button>
-            <button
-              onClick={handleNext}
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 
-             text-white text-4xl font-bold hover:text-green-400"
-              aria-label="Next image"
-            >
-              ›
-            </button>
+            <div className="hidden md:block">
+              <button
+                onClick={handlePrev}
+                className="absolute top-1/2 left-[-3rem] transform -translate-y-1/2 text-white text-3xl font-bold hover:text-green-400"
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+              <button
+                onClick={handleNext}
+                className="absolute top-1/2 right-[-3rem] transform -translate-y-1/2 text-white text-3xl font-bold hover:text-green-400"
+                aria-label="Next image"
+              >
+                ›
+              </button>
+            </div>
+
+            {/* Mobile arrows */}
+            <div className="flex justify-center gap-8 mt-4 md:hidden">
+              <button
+                onClick={handlePrev}
+                className="text-white text-3xl font-bold hover:text-green-400"
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+              <button
+                onClick={handleNext}
+                className="text-white text-3xl font-bold hover:text-green-400"
+                aria-label="Next image"
+              >
+                ›
+              </button>
+            </div>
           </div>
         </div>
       )}
