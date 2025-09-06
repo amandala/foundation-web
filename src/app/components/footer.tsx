@@ -15,14 +15,18 @@ export default function Footer() {
 
   useEffect(() => {
     const fetchFooterData = async () => {
-      const result = await client.fetch(`*[_type == "homePage"][0]{
+      const result = await client.fetch(
+        `*[_type == "homePage"][0]{
         contactEmail,
         socialLinks[]{
           type,
           url,
           icon
         }
-      }`);
+      }`,
+        {},
+        { cache: "no-store" }
+      );
       setData(result);
     };
 

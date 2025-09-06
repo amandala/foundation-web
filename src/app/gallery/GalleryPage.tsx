@@ -20,7 +20,11 @@ const fetchGalleryImages = async (
         _id, image, "tags": tags[]->slug.current, caption, photoCredit
       }`;
 
-  const results = await client.fetch(query, { tagSlugs, tagCount });
+  const results = await client.fetch(
+    query,
+    { tagSlugs, tagCount },
+    { cache: "no-store" }
+  );
 
   return results.map((item: GalleryImage) => ({
     _id: item._id,

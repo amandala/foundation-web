@@ -56,7 +56,11 @@ interface EventPageProps {
 
 export default async function EventPage({ params }: EventPageProps) {
   const resolvedParams = await params;
-  const event = await client.fetch(EVENT_QUERY, { slug: resolvedParams.slug });
+  const event = await client.fetch(
+    EVENT_QUERY,
+    { slug: resolvedParams.slug },
+    { cache: "no-store" }
+  );
 
   if (!resolvedParams?.slug) {
     return <div>Error: No slug provided.</div>;

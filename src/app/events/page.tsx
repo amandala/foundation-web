@@ -25,7 +25,7 @@ const urlFor = (source: SanityImageSource) =>
     : null;
 
 export default async function EventsPage() {
-  const events = await client.fetch(EVENTS_QUERY);
+  const events = await client.fetch(EVENTS_QUERY, {}, { cache: "no-store" });
 
   // Get today's date (no time)
   const today = new Date();

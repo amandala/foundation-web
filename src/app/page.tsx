@@ -98,7 +98,7 @@ export default function HomePage() {
   const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    client.fetch(query).then((res) => {
+    client.fetch(query, {}, { cache: "no-store" }).then((res) => {
       if (res.foundationPartners) {
         res.foundationPartners = res.foundationPartners.sort(
           (a: Partner, b: Partner) => (a.order || 0) - (b.order || 0)
