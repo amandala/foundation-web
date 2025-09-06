@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Partner } from "@/app/types";
 import { Gallery } from "@/app/gallery/Gallery";
 import { EventTitle } from "@/app/components/EventTitle/EventTitle";
+import type { PortableTextMarkComponentProps } from "@portabletext/react";
 
 import { MapPinIcon } from "@heroicons/react/24/solid";
 
@@ -83,6 +84,26 @@ export default async function EventPage({ params }: EventPageProps) {
       : null
     : null;
 
+  const portableComponents = {
+    types: {},
+    marks: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      link: ({ children, value }: PortableTextMarkComponentProps<any>) => {
+        const href = value?.href || "#";
+        return (
+          <a
+            href={href}
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="hover:underline text-blue-600 font-bold"
+          >
+            {children}
+          </a>
+        );
+      },
+    },
+  };
+
   return (
     <main className="container mx-auto min-h-screen max-w-4xl p-8 flex flex-col gap-4">
       <EventTitle title={event.name} />
@@ -132,7 +153,10 @@ export default async function EventPage({ params }: EventPageProps) {
       <div>
         {Array.isArray(event.description) && (
           <div className="pt-4 space-y-4">
-            <PortableText value={event.description} />
+            <PortableText
+              value={event.description}
+              components={portableComponents}
+            />
           </div>
         )}
       </div>
