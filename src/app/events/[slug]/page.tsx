@@ -78,20 +78,25 @@ export default async function EventPage({ params }: EventPageProps) {
   }
 
   const eventImageUrl = event.coverImageUrl
-    ? urlFor(event.coverImageUrl)?.width(550).height(550).url()
+    ? urlFor(event?.coverImageUrl)
+      ? urlFor(event?.coverImageUrl)!.width(900).auto("format").url()
+      : null
     : null;
 
   return (
     <main className="container mx-auto min-h-screen max-w-4xl p-8 flex flex-col gap-4">
       <EventTitle title={event.name} />
       {eventImageUrl && (
-        <Image
-          src={eventImageUrl}
-          alt={event.name}
-          className="mt-2 w-full h-auto rounded-lg"
-          width={800}
-          height={600}
-        />
+        <div className="mx-auto max-w-[500px]">
+          <Image
+            src={eventImageUrl}
+            alt={event.name}
+            className="mt-2 w-full h-auto rounded-lg object-contain"
+            width={500}
+            height={300}
+            priority
+          />
+        </div>
       )}
 
       <div className="prose">

@@ -167,27 +167,27 @@ export default function HomePage() {
 
         {/* Featured Event Section */}
         {featuredEvent && (
-          <section className="mx-auto max-w-3xl p-8">
+          <section className="mx-auto max-w-[500px] p-4">
             <a
               href={`/events/${featuredEvent.slug}`}
               className="block bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow"
             >
               {featuredEvent.coverImage && (
                 <Image
-                  src={urlFor(featuredEvent.coverImage).width(800).url()}
+                  src={urlFor(featuredEvent.coverImage).width(500).url()}
                   alt={featuredEvent.name}
-                  width={800}
-                  height={400}
-                  className="w-full h-[400px] object-cover"
+                  width={500}
+                  height={300}
+                  className="w-full h-auto object-contain"
                   placeholder="blur"
                   blurDataURL={urlFor(featuredEvent.coverImage)
-                    .width(800)
+                    .width(500)
                     .blur(20)
                     .url()}
                   loading="lazy"
                 />
               )}
-              <div className="p-4">
+              <div className="p-4 text-center">
                 <h3 className="text-xl font-semibold">{featuredEvent.name}</h3>
                 <p className="text-gray-600">
                   {new Date(featuredEvent.startDate).toLocaleDateString(

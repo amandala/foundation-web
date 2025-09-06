@@ -55,7 +55,7 @@ export default async function EventsPage() {
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8">
         {eventList.map((event: Event) => {
           const coverUrl = event.coverImage
-            ? urlFor(event.coverImage)?.width(600)?.height(400)?.url()
+            ? urlFor(event.coverImage)?.width(300)?.auto("format")?.url()
             : null;
 
           return (
@@ -71,8 +71,8 @@ export default async function EventsPage() {
                   <Image
                     src={coverUrl}
                     alt={event.name}
-                    width={600}
-                    height={400}
+                    width={400}
+                    height={200}
                     className="w-full object-cover"
                     placeholder="blur"
                     blurDataURL={
