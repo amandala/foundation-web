@@ -51,20 +51,8 @@ const GalleryPage = () => {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
 
-  const sortGalleryImagesByCaption = (
-    images: GalleryImage[]
-  ): GalleryImage[] => {
-    return images.sort((a, b) => {
-      const captionA = a.caption?.toLowerCase() || "";
-      const captionB = b.caption?.toLowerCase() || "";
-      return captionA.localeCompare(captionB);
-    });
-  };
-
   useEffect(() => {
-    fetchGalleryImages(tagParams)
-      .then(sortGalleryImagesByCaption)
-      .then(setGalleryImages);
+    fetchGalleryImages(tagParams).then(setGalleryImages);
   }, [tagParams]);
 
   useEffect(() => {
@@ -98,7 +86,7 @@ const GalleryPage = () => {
   );
   const otherTags = allTags
     .filter((tag) => !specialTagSlugs?.includes(tag?.slug?.current))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.name?.localeCompare(b.name));
 
   return (
     <main className={`${styles.container} ${styles.main}`}>
