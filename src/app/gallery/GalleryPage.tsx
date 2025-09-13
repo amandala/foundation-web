@@ -94,10 +94,10 @@ const GalleryPage = () => {
 
   const specialTagSlugs = ["oldschool", "newschool"];
   const specialTags = allTags.filter((tag) =>
-    specialTagSlugs.includes(tag.slug.current)
+    specialTagSlugs.includes(tag?.slug?.current)
   );
   const otherTags = allTags
-    .filter((tag) => !specialTagSlugs.includes(tag.slug.current))
+    .filter((tag) => !specialTagSlugs?.includes(tag?.slug?.current))
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
@@ -127,7 +127,7 @@ const GalleryPage = () => {
         {/* All Other Tags */}
         <div className={styles.otherTags}>
           {otherTags.map((tag) => {
-            const isActive = tagParams.includes(tag.slug.current);
+            const isActive = tagParams.includes(tag?.slug?.current);
             return (
               <button
                 key={tag._id}
