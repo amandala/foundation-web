@@ -6,12 +6,12 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/sanity/client";
 import Link from "next/link";
 import Image from "next/image";
-import { Partner } from "@/app/types";
 import { Gallery } from "@/app/gallery/Gallery";
 import { EventTitle } from "@/app/components/EventTitle/EventTitle";
 import type { PortableTextMarkComponentProps } from "@portabletext/react";
 
 import { MapPinIcon } from "@heroicons/react/24/solid";
+import PartnerGrid from "@/app/components/Partners";
 
 const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   _id,
@@ -165,48 +165,7 @@ export default async function EventPage({ params }: EventPageProps) {
           <Gallery galleryImages={event.featuredGalleryImages} />
         )}
       {event.eventPartners && event.eventPartners.length > 0 && (
-        <section className="mx-auto max-w-5xl p-8">
-          <h2 className="text-2xl font-bold mb-6">Event Partners</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center">
-            {event.eventPartners.map((partner: Partner) => (
-              <a
-                key={partner._id}
-                href={partner.link || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex justify-center items-center p-4 bg-white rounded shadow hover:shadow-lg transition-shadow"
-                title={partner.name}
-              >
-                {partner.image ? (
-                  <Image
-                    src={
-                      urlFor(partner.image)
-                        ?.width(200)
-                        ?.height(100)
-                        ?.auto("format")
-                        ?.url() || ""
-                    }
-                    alt={partner.name}
-                    width={200}
-                    height={100}
-                    style={{ objectFit: "contain" }}
-                    placeholder="blur"
-                    blurDataURL={
-                      urlFor(partner.image)
-                        ?.width(200)
-                        ?.height(100)
-                        ?.blur(20)
-                        ?.url() || ""
-                    }
-                    loading="lazy"
-                  />
-                ) : (
-                  <span className="text-gray-700">{partner.name}</span>
-                )}
-              </a>
-            ))}
-          </div>
-        </section>
+        <PartnerGrid partners={event.eventPartners} />
       )}
     </main>
   );
