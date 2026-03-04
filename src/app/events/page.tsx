@@ -2,8 +2,7 @@
 
 import React from "react";
 import { client } from "@/sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { urlFor } from "@/sanity/image";
 import Link from "next/link";
 import Image from "next/image";
 import { Event } from "../types";
@@ -17,12 +16,6 @@ const EVENTS_QUERY = `*[_type == "event"] {
   startDate,
   endDate,
 }`;
-
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-  projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null;
 
 export default async function EventsPage() {
   const events = await client.fetch(EVENTS_QUERY, {}, { cache: "no-store" });

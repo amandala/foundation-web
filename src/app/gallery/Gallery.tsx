@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import imageUrlBuilder from "@sanity/image-url";
-import { client } from "../../sanity/client";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { urlFor } from "@/sanity/image";
 import { GalleryImage } from "../types";
 import styles from "./styles.module.scss";
 import { useSwipeable } from "react-swipeable";
@@ -15,9 +13,6 @@ export const Gallery = ({
   galleryImages: GalleryImage[];
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const builder = imageUrlBuilder(client);
-  const urlFor = (source: SanityImageSource) => builder.image(source);
 
   const handleNext = useCallback(() => {
     if (selectedIndex === null) return;

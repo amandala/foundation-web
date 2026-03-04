@@ -89,7 +89,7 @@ const GalleryPage = () => {
     .sort((a, b) => a.name?.localeCompare(b.name));
 
   return (
-    <main className={`${styles.container} ${styles.main}`}>
+    <main className={styles.container}>
       <PageHeader title="Gallery" />
       <div className="my-4">
         {/* Special Tags Row */}

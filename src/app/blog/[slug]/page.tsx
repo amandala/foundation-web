@@ -1,8 +1,7 @@
 // File: /app/[slug]/page.tsx
 
 import { PortableText } from "next-sanity";
-import imageUrlBuilder from "@sanity/image-url";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { urlFor } from "@/sanity/image";
 import { client } from "@/sanity/client";
 import Link from "next/link";
 import Image from "next/image";
@@ -34,12 +33,6 @@ const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
     "tags": tags[]->slug.current
   }
 }`;
-
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-  projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null;
 
 const options = { next: { revalidate: 30 } };
 
@@ -94,7 +87,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
       <div className="prose">
-        <p className="text-1xl font-bold mb-4">
+        <p className="text-xl font-bold mb-4">
           Published:{" "}
           {new Date(post.publishedAt).toLocaleDateString("en-US", {
             month: "short",

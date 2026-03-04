@@ -48,13 +48,15 @@ export default async function BlogPage() {
                 </p>
                 <p className="text-gray-600">{post.description}</p>
               </div>
-              <Image
-                src={post.imageUrl}
-                alt={post.title}
-                className="mt-2 w-full h-auto rounded-lg"
-                width={800}
-                height={600}
-              />
+              {post.imageUrl && (
+                <Image
+                  src={post.imageUrl}
+                  alt={post.title}
+                  className="mt-2 w-full h-auto rounded-lg"
+                  width={800}
+                  height={600}
+                />
+              )}
             </Link>
           </li>
         ))}

@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { client } from "@/sanity/client";
 import { SocialLink } from "../types";
@@ -10,28 +7,18 @@ type FooterData = {
   socialLinks?: SocialLink[];
 };
 
-export default function Footer() {
-  const [data, setData] = useState<FooterData | null>(null);
-
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      const result = await client.fetch(
-        `*[_type == "homePage"][0]{
-        contactEmail,
-        socialLinks[]{
-          type,
-          url,
-          icon
-        }
-      }`,
-        {},
-        { cache: "no-store" }
-      );
-      setData(result);
-    };
-
-    fetchFooterData();
-  }, []);
+export default async function Footer() {
+  const data = await client.fetch<FooterData>(
+    `*[_type == "homePage"][0]{
+      contactEmail,
+      socialLinks[]{
+        type,
+        url
+      }
+    }`,
+    {},
+    { next: { revalidate: 30 } }
+  );
 
   if (!data) return null;
 
@@ -66,7 +53,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-2 text-2xl">Follow</h4>
             <ul className="space-y-2">
               {data.socialLinks.map((link, i) => (
-                <li key={i}>
+                <li key={link.url || `${link.type}-${i}`}>
                   <a
                     href={link.url}
                     target="_blank"
