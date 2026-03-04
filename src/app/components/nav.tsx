@@ -46,7 +46,7 @@ export default function Nav() {
 
         {/* Mobile Burger Button */}
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}

@@ -6,7 +6,7 @@ import { client } from "@/sanity/client";
 import Link from "next/link";
 import Image from "next/image";
 import { Gallery } from "@/app/gallery/Gallery";
-import { EventTitle } from "@/app/components/EventTitle/EventTitle";
+import { PageHeader } from "@/app/components/PageHeader/PageHeader";
 import type { PortableTextMarkComponentProps } from "@portabletext/react";
 
 import { MapPinIcon } from "@heroicons/react/24/solid";
@@ -92,7 +92,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
   return (
     <main className="container mx-auto min-h-screen max-w-4xl p-8 flex flex-col gap-4">
-      <EventTitle title={event.name} />
+      <PageHeader title={event.name} size="small" />
       {eventImageUrl && (
         <div className="mx-auto max-w-[500px]">
           <Image

@@ -45,7 +45,7 @@ export default async function EventsPage() {
     }
 
     return (
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {eventList.map((event: Event) => {
           const coverUrl = event.coverImage
             ? urlFor(event.coverImage)?.width(300)?.auto("format")?.url()

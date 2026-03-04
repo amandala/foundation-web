@@ -83,7 +83,7 @@ export default async function Home() {
         )}
         {heroMedia?.type === "video" && heroMedia.video && (
           <section className="relative">
-            <video className="w-full h-auto" loop muted autoPlay playsInline>
+            <video className="w-full h-auto" loop muted autoPlay playsInline preload="auto">
               <source src={urlForFile(heroMedia.video)} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
