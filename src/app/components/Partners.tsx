@@ -1,19 +1,12 @@
 "use client";
 import Image from "next/image";
-import imageUrlBuilder from "@sanity/image-url";
+import { urlFor } from "@/sanity/image";
 import { Partner } from "../types";
 
-// Initialize builder with your Sanity projectId and dataset
-const builder = imageUrlBuilder({
-  projectId: "4qydhzw9",
-  dataset: "production",
-});
-
 const PartnerGrid = ({ partners }: { partners: Partner[] }) => {
-  const urlFor = (source: { asset: { _ref: string } }) => builder.image(source);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 items-center">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 items-center">
       {partners.map((partner: Partner) => (
         <a
           key={partner._id}
@@ -21,7 +14,7 @@ const PartnerGrid = ({ partners }: { partners: Partner[] }) => {
           target="_blank"
           rel="noopener noreferrer"
           className="flex justify-center items-center p-4 "
-          title={partner.name}
+          aria-label={`${partner.name} (opens in new tab)`}
         >
           {partner.image ? (
             <Image

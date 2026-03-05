@@ -37,24 +37,28 @@ export default async function BlogPage() {
         {posts.map((post) => (
           <li className="hover:underline" key={post._id}>
             <Link href={`/blog/${post.slug.current}`}>
-              <div className="flex flex-row justify-between">
-                <h2 className="text-xl font-semibold grow">{post.title}</h2>
-                <p>
+              <div className="flex flex-row justify-between items-baseline gap-4">
+                <h2 className="text-xl font-semibold">{post.title}</h2>
+                <p className="text-sm text-gray-500 shrink-0">
                   {new Date(post.publishedAt).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
                     year: "numeric",
                   })}
                 </p>
-                <p className="text-gray-600">{post.description}</p>
               </div>
-              <Image
-                src={post.imageUrl}
-                alt={post.title}
-                className="mt-2 w-full h-auto rounded-lg"
-                width={800}
-                height={600}
-              />
+              {post.description && (
+                <p className="text-gray-600 mt-1">{post.description}</p>
+              )}
+              {post.imageUrl && (
+                <Image
+                  src={post.imageUrl}
+                  alt={post.title}
+                  className="mt-2 w-full h-auto rounded-lg"
+                  width={800}
+                  height={600}
+                />
+              )}
             </Link>
           </li>
         ))}

@@ -1,59 +1,20 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { client } from "../sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { urlFor } from "../sanity/image";
 import { PortableText, PortableTextBlock } from "@portabletext/react";
-import { Partner } from "./types";
+import type { HomePage } from "./types";
 import { Gallery } from "./gallery/Gallery";
 import styles from "./page.module.scss";
 import PartnerGrid from "./components/Partners";
-
-interface HomePage {
-  heroMedia?: {
-    type: "image" | "video";
-    image?: { asset: { _ref: string } };
-    video?: { asset?: { _ref?: string; url?: string } };
-  };
-  introText?: PortableTextBlock[];
-  contactEmail?: string;
-  socialLinks?: { type: string; url: string }[];
-  featuredEvent?: {
-    name: string;
-    slug: string;
-    coverImage?: { asset: { _ref: string } };
-    startDate: string;
-    endDate: string;
-    description: PortableTextBlock[];
-  };
-  featuredPosts?: {
-    _id: string;
-    title: string;
-    slug: { current: string };
-    description: string;
-    publishedAt: string;
-    imageUrl: string;
-  }[];
-  featuredGalleryImages?: {
-    _id: string;
-    image: { asset: { _ref: string } };
-    caption?: string;
-    photoCredit?: string;
-    tags?: string[];
-  }[];
-  foundationPartners?: Partner[];
-}
-
-const builder = imageUrlBuilder(client);
-const urlFor = (source: { asset: { _ref: string } }) => builder.image(source);
 
 function urlForFile(source: { asset?: { _ref?: string; url?: string } }) {
   if (source?.asset?.url) return source.asset.url;
   if (!source?.asset?._ref) return "";
   const ref = source.asset._ref;
   const [, id, ext] = ref.split("-");
-  return `https://cdn.sanity.io/files/4qydhzw9/production/${id}.${ext}`;
+  const { projectId, dataset } = client.config();
+  return `https://cdn.sanity.io/files/${projectId}/${dataset}/${id}.${ext}`;
 }
 
 const query = `*[_type == "homePage"][0]{
@@ -91,38 +52,15 @@ const query = `*[_type == "homePage"][0]{
   }
 }`;
 
-export default function HomePage() {
-  const [data, setData] = useState<HomePage | null>(null);
-  const [loading, setLoading] = useState(true);
+export default async function Home() {
+  const data = await client.fetch<HomePage>(query, {}, { next: { revalidate: 30 } });
 
-  // Modal state for selected featured gallery image URL
-  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
+  if (!data) return <p className="text-center text-red-500 m-24">No data found</p>;
 
-  useEffect(() => {
-    client.fetch(query, {}, { cache: "no-store" }).then((res) => {
-      if (res.foundationPartners) {
-        res.foundationPartners = res.foundationPartners.sort(
-          (a: Partner, b: Partner) => (a.order || 0) - (b.order || 0)
-        );
-      }
-      setData(res);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading)
-    return <p className="text-center text-gray-500 m-24">Loading...</p>;
-  if (!data)
-    return <p className="text-center text-red-500 m-24">No data found</p>;
-
-  const {
-    heroMedia,
-    introText,
-    featuredEvent,
-    featuredPosts,
-    featuredGalleryImages,
-    foundationPartners,
-  } = data;
+  const { heroMedia, introText, featuredEvent, featuredPosts, featuredGalleryImages } = data;
+  const foundationPartners = data.foundationPartners
+    ? [...data.foundationPartners].sort((a, b) => (a.order || 0) - (b.order || 0))
+    : [];
 
   return (
     <>
@@ -145,7 +83,7 @@ export default function HomePage() {
         )}
         {heroMedia?.type === "video" && heroMedia.video && (
           <section className="relative">
-            <video className="w-full h-auto" loop muted autoPlay playsInline>
+            <video className="w-full h-auto" loop muted autoPlay playsInline preload="auto">
               <source src={urlForFile(heroMedia.video)} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
@@ -161,7 +99,7 @@ export default function HomePage() {
               Foundation Collective
             </h1>
             <div className="prose mx-auto p-8">
-              <PortableText value={introText || []} />
+              <PortableText value={(introText || []) as PortableTextBlock[]} />
             </div>
           </div>
         </section>
@@ -181,24 +119,18 @@ export default function HomePage() {
                   height={300}
                   className="w-full h-auto object-contain"
                   placeholder="blur"
-                  blurDataURL={urlFor(featuredEvent.coverImage)
-                    .width(500)
-                    .blur(20)
-                    .url()}
+                  blurDataURL={urlFor(featuredEvent.coverImage).width(500).blur(20).url()}
                   loading="lazy"
                 />
               )}
               <div className="p-4 text-center">
                 <h3 className="text-xl font-semibold">{featuredEvent.name}</h3>
                 <p className="text-gray-600">
-                  {new Date(featuredEvent.startDate).toLocaleDateString(
-                    "en-US",
-                    {
-                      month: "short",
-                      day: "numeric",
-                      hour: "numeric",
-                    }
-                  )}
+                  {new Date(featuredEvent.startDate).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                  })}
                   <span> - </span>
                   {new Date(featuredEvent.endDate).toLocaleDateString("en-US", {
                     month: "short",
@@ -212,7 +144,6 @@ export default function HomePage() {
         )}
 
         {/* Featured Gallery Images Section */}
-
         {featuredGalleryImages && featuredGalleryImages.length > 0 && (
           <div className="py-12">
             <Gallery
@@ -242,8 +173,6 @@ export default function HomePage() {
                       width={800}
                       height={300}
                       className="w-full h-[300px] object-cover"
-                      placeholder="blur"
-                      blurDataURL={post.imageUrl}
                       loading="lazy"
                     />
                   )}
@@ -264,26 +193,8 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* Modal overlay */}
-        {modalImageUrl && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer"
-            onClick={() => setModalImageUrl(null)}
-          >
-            <Image
-              src={modalImageUrl}
-              alt="Full size image"
-              width={800}
-              height={600}
-              style={{ objectFit: "contain" }}
-              priority
-            />
-          </div>
-        )}
-
         {/* Foundation Partners Section */}
-
-        {foundationPartners && foundationPartners.length > 0 && (
+        {foundationPartners.length > 0 && (
           <section className="mx-auto max-w-5xl p-8">
             <h2 className="text-2xl font-bold mb-6 text-center">
               Foundation Partners

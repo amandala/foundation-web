@@ -21,7 +21,7 @@ export default function Nav() {
               className="hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              <h2>Gallery</h2>
+              Gallery
             </Link>
           </li>
           <li>
@@ -30,7 +30,7 @@ export default function Nav() {
               className="hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              <h2>Events</h2>
+              Events
             </Link>
           </li>
           <li>
@@ -39,16 +39,17 @@ export default function Nav() {
               className="hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              <h2>Blog</h2>
+              Blog
             </Link>
           </li>
         </ul>
 
         {/* Mobile Burger Button */}
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
         >
           {/* Hamburger icon */}
           <svg
@@ -78,17 +79,14 @@ export default function Nav() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <ul
-            className="flex flex-col absolute top-full right-0 bg-white w-40 md:hidden z-50 border-4"
-            style={{ borderColor: "var(--color-border)" }}
-          >
+          <ul className="flex flex-col absolute top-full right-0 bg-white w-40 md:hidden z-50 border-4 border-gray-300">
             <li>
               <Link
                 href="/gallery"
                 className="block px-4 py-2 hover:bg-blue-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <h2>Gallery</h2>
+                Gallery
               </Link>
             </li>
             <li>
@@ -97,7 +95,7 @@ export default function Nav() {
                 className="block px-4 py-2 hover:bg-blue-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <h2>Events</h2>
+                Events
               </Link>
             </li>
             <li>
@@ -106,7 +104,7 @@ export default function Nav() {
                 className="block px-4 py-2 hover:bg-blue-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <h2>Blog</h2>
+                Blog
               </Link>
             </li>
           </ul>

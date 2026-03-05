@@ -1,13 +1,12 @@
 // File: /app/[slug]/page.tsx
 
 import { PortableText } from "next-sanity";
-import imageUrlBuilder from "@sanity/image-url";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { urlFor } from "@/sanity/image";
 import { client } from "@/sanity/client";
 import Link from "next/link";
 import Image from "next/image";
 import { Gallery } from "@/app/gallery/Gallery";
-import { EventTitle } from "@/app/components/EventTitle/EventTitle";
+import { PageHeader } from "@/app/components/PageHeader/PageHeader";
 import type { PortableTextMarkComponentProps } from "@portabletext/react";
 
 import { MapPinIcon } from "@heroicons/react/24/solid";
@@ -33,21 +32,10 @@ const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   eventPartners[]->{
     _id,
     name,
-    image {
-      asset-> {
-        _id,
-        url
-      }
-    },
-    website
+    image,
+    link
   }
 }`;
-
-const { projectId, dataset } = client.config();
-const urlFor = (source: SanityImageSource) =>
-  projectId && dataset
-    ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null;
 
 interface EventPageProps {
   params: Promise<{
@@ -70,18 +58,16 @@ export default async function EventPage({ params }: EventPageProps) {
   if (!event) {
     return (
       <main className="container mx-auto min-h-screen max-w-3xl p-8">
-        <p className="text-red-500">Post not found.</p>
-        <Link href="/" className="text-blue-500 hover:underline">
-          ← Back to posts
+        <p className="text-red-500">Event not found.</p>
+        <Link href="/events" className="text-blue-500 hover:underline">
+          ← Back to events
         </Link>
       </main>
     );
   }
 
   const eventImageUrl = event.coverImageUrl
-    ? urlFor(event?.coverImageUrl)
-      ? urlFor(event?.coverImageUrl)!.width(900).auto("format").url()
-      : null
+    ? urlFor(event.coverImageUrl).width(900).auto("format").url()
     : null;
 
   const portableComponents = {
@@ -106,7 +92,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
   return (
     <main className="container mx-auto min-h-screen max-w-4xl p-8 flex flex-col gap-4">
-      <EventTitle title={event.name} />
+      <PageHeader title={event.name} size="small" />
       {eventImageUrl && (
         <div className="mx-auto max-w-[500px]">
           <Image
@@ -121,7 +107,7 @@ export default async function EventPage({ params }: EventPageProps) {
       )}
 
       <div className="prose">
-        <p className="text-1xl font-bold mb-4">
+        <p className="text-xl font-bold mb-4">
           {new Date(event.startDate).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",

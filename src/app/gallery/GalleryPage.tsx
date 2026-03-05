@@ -37,7 +37,7 @@ const fetchGalleryImages = async (
 };
 
 const fetchAllTags = async (): Promise<Tag[]> => {
-  return client.fetch(`*[_type == "tag"]{_id, name, slug, description}`);
+  return client.fetch(`*[_type == "tag" && count(*[_type == "galleryImage" && references(^._id)]) > 0]{_id, name, slug, description}`);
 };
 
 const GalleryPage = () => {
@@ -89,7 +89,7 @@ const GalleryPage = () => {
     .sort((a, b) => a.name?.localeCompare(b.name));
 
   return (
-    <main className={`${styles.container} ${styles.main}`}>
+    <main className={styles.container}>
       <PageHeader title="Gallery" />
       <div className="my-4">
         {/* Special Tags Row */}
