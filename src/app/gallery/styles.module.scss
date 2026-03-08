@@ -5,12 +5,12 @@
   min-height: 100vh;
 }
 
-.otherTags,
-.specialTagRow {
+.filterRow {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .tagButton {
@@ -19,9 +19,12 @@
   border: 1px solid var(--background);
   background-color: var(--foreground);
   color: var(--background);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
   user-select: none;
+  display: inline-flex;
+  align-items: center;
+  min-width: max-content;
 
   &:hover {
     background-color: #d1d5db;
@@ -34,18 +37,88 @@
   border-color: #2563eb;
 }
 
+.filterHint {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+}
+
+.removeX {
+  margin-left: 6px;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.7;
+}
+
 .clearButton {
-  font-size: 10px;
-  padding: 4px;
-  margin-left: 12px;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 9999px;
-  border: 1px solid #ef4444; // red-500
+  border: 1px solid #ef4444;
   background-color: transparent;
   color: #ef4444;
+  cursor: pointer;
 
   &:hover {
     background-color: #ef4444;
     color: white;
+  }
+}
+
+.artistSearch {
+  position: relative;
+  width: 200px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #2563eb;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.searchDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+}
+
+.searchOption {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #111;
+
+  &:hover {
+    background-color: #f3f4f6;
   }
 }
 
@@ -90,4 +163,21 @@
 .modalImage {
   max-height: 90vh;
   object-fit: contain;
+}
+
+.skeleton {
+  aspect-ratio: 16 / 10;
+  background: #e5e7eb;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 37%, #e5e7eb 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
