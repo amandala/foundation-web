@@ -1,13 +1,23 @@
 import Link from "next/link";
 import { client } from "@/sanity/client";
 import { SocialLink } from "../types";
+import { FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { type IconType } from "react-icons";
+
+const socialIcons: Record<string, IconType> = {
+  instagram: FaInstagram,
+  facebook: FaFacebookF,
+  twitter: FaXTwitter,
+  youtube: FaYoutube,
+};
 
 type FooterData = {
   contactEmail?: string;
   socialLinks?: SocialLink[];
 };
 
-export default async function Footer() {
+export default async function Footer({ hasBlog = true }: { hasBlog?: boolean }) {
   const data = await client.fetch<FooterData>(
     `*[_type == "homePage"][0]{
       contactEmail,
@@ -29,11 +39,13 @@ export default async function Footer() {
         <div className="flex flex-col items-center md:items-start">
           <h4 className="font-semibold mb-2 text-2xl">Navigation</h4>
           <ul className="space-y-2">
-            <li>
-              <Link href="/blog" className="hover:underline">
-                Blog
-              </Link>
-            </li>
+            {hasBlog && (
+              <li>
+                <Link href="/blog" className="hover:underline">
+                  Blog
+                </Link>
+              </li>
+            )}
             <li>
               <Link href="/events" className="hover:underline">
                 Events
@@ -52,18 +64,22 @@ export default async function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-2 text-2xl">Follow</h4>
             <ul className="space-y-2">
-              {data.socialLinks.map((link, i) => (
-                <li key={link.url || `${link.type}-${i}`}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                  >
-                    {link.type}
-                  </a>
-                </li>
-              ))}
+              {data.socialLinks.map((link, i) => {
+                const Icon = socialIcons[link.type];
+                return (
+                  <li key={link.url || `${link.type}-${i}`}>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline inline-flex items-center gap-2"
+                    >
+                      {Icon && <Icon className="w-4 h-4" />}
+                      {link.type.charAt(0).toUpperCase() + link.type.slice(1)}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}

@@ -6,6 +6,7 @@ import Nav from "./components/nav";
 import "./globals.css";
 import Footer from "./components/footer";
 import Script from "next/script";
+import { client } from "@/sanity/client";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -25,11 +26,18 @@ export const metadata = {
   description: "Foundation Collective",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const postCount = await client.fetch<number>(
+    `count(*[_type == "post"])`,
+    {},
+    { next: { revalidate: 30 } }
+  );
+  const hasBlog = postCount > 0;
+
   return (
     <html lang="en">
       <Script id="disable-right-click" strategy="afterInteractive">
@@ -44,9 +52,9 @@ export default function RootLayout({
 
       <Analytics />
       <body className={` ${anton.variable} ${inter.variable} antialiased`}>
-        <Nav />
+        <Nav hasBlog={hasBlog} />
         {children}
-        <Footer />
+        <Footer hasBlog={hasBlog} />
       </body>
     </html>
   );

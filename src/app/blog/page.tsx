@@ -30,6 +30,23 @@ const options = { next: { revalidate: 30 } };
 export default async function BlogPage() {
   const posts = await client.fetch<SanityDocument[]>(POSTS_QUERY, {}, options);
 
+  if (posts.length === 0) {
+    return (
+      <main className="container mx-auto min-h-screen max-w-3xl p-8">
+        <PageHeader title="Blog" />
+        <div className="text-center py-16">
+          <p className="text-xl text-gray-600 mb-4">
+            No posts yet — stay tuned!
+          </p>
+          <p className="text-gray-500">
+            Follow us on social media for the latest updates and announcements.
+            Check the links in the footer below.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8">
       <PageHeader title="Blog" />

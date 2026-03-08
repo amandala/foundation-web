@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-export default function Nav() {
+export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -33,15 +33,17 @@ export default function Nav() {
               Events
             </Link>
           </li>
-          <li>
-            <Link
-              href="/blog"
-              className="hover:text-blue-600"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Blog
-            </Link>
-          </li>
+          {hasBlog && (
+            <li>
+              <Link
+                href="/blog"
+                className="hover:text-blue-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Blog
+              </Link>
+            </li>
+          )}
         </ul>
 
         {/* Mobile Burger Button */}
@@ -98,15 +100,17 @@ export default function Nav() {
                 Events
               </Link>
             </li>
-            <li>
-              <Link
-                href="/blog"
-                className="block px-4 py-2 hover:bg-blue-100"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Blog
-              </Link>
-            </li>
+            {hasBlog && (
+              <li>
+                <Link
+                  href="/blog"
+                  className="block px-4 py-2 hover:bg-blue-100"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+              </li>
+            )}
           </ul>
         )}
       </nav>
