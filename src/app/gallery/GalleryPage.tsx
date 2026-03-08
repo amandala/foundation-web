@@ -103,18 +103,24 @@ const GalleryPage = () => {
     router.replace(`?${params.toString()}`, { scroll: false });
   };
 
+  const specialTagSlugs = ["oldschool", "newschool"];
+
   const toggleTag = (slug: string) => {
-    const updated = tagParams.includes(slug)
-      ? tagParams.filter((t) => t !== slug)
-      : tagParams.length < 2
-        ? [...tagParams, slug]
-        : tagParams;
-    updateQueryParams(updated);
+    if (tagParams.includes(slug)) {
+      updateQueryParams(tagParams.filter((t) => t !== slug));
+      return;
+    }
+    // If selecting an era tag, remove the other era tag
+    const isEraTag = specialTagSlugs.includes(slug);
+    const filtered = isEraTag
+      ? tagParams.filter((t) => !specialTagSlugs.includes(t))
+      : tagParams;
+    if (filtered.length < 2) {
+      updateQueryParams([...filtered, slug]);
+    }
   };
 
   const clearFilters = () => updateQueryParams([]);
-
-  const specialTagSlugs = ["oldschool", "newschool"];
   const specialTags = allTags.filter((tag) =>
     specialTagSlugs.includes(tag?.slug?.current)
   );
@@ -125,40 +131,25 @@ const GalleryPage = () => {
   return (
     <main className={styles.container}>
       <PageHeader title="Gallery" />
-      <div className="my-4">
-        <h2 className="text-2xl font-bold mb-2">Filters</h2>
-        <p className={styles.filterHint}>
-          Filter by era or search for an artist. Combine up to 2 filters to find collaborations.
-        </p>
-
-        <div className={styles.filterRow}>
+      <div className="my-4 space-y-3">
+        {/* Era toggle */}
+        <div className={styles.eraToggle}>
           {specialTags.map((tag) => {
             const isActive = tagParams.includes(tag.slug.current);
             return (
               <button
                 key={tag._id}
                 onClick={() => toggleTag(tag.slug.current)}
-                className={`${styles.tagButton} ${
-                  isActive ? styles.activeTag : ""
-                }`}
+                className={`${styles.eraButton} ${isActive ? styles.eraActive : ""}`}
               >
                 {tag.name}
-                {isActive && <span className={styles.removeX}>&times;</span>}
               </button>
             );
           })}
-          {activeTags
-            .filter((tag) => !specialTagSlugs.includes(tag.slug.current))
-            .map((tag) => (
-              <button
-                key={tag._id}
-                onClick={() => toggleTag(tag.slug.current)}
-                className={`${styles.tagButton} ${styles.activeTag}`}
-              >
-                {tag.name}
-                <span className={styles.removeX}>&times;</span>
-              </button>
-            ))}
+        </div>
+
+        {/* Artist search + clear */}
+        <div className={styles.searchRow}>
           <ArtistSearch
             tags={otherTags}
             activeSlugs={tagParams}
@@ -167,10 +158,26 @@ const GalleryPage = () => {
           />
           {tagParams.length > 0 && (
             <button onClick={clearFilters} className={styles.clearButton}>
-              Clear All Filters
+              Clear filters
             </button>
           )}
         </div>
+
+        {/* Active filters */}
+        {tagParams.length > 0 && (
+          <div className={styles.activeFilters}>
+            {activeTags.map((tag) => (
+              <button
+                key={tag._id}
+                onClick={() => toggleTag(tag.slug.current)}
+                className={styles.activeFilterChip}
+              >
+                {tag.name}
+                <span className={styles.removeX}>&times;</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <Gallery galleryImages={galleryImages} onLoadMore={loadMore} isLoading={isLoading} hasMore={hasMore} />
       {activeTags.length > 0 && (

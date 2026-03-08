@@ -33,8 +33,8 @@ export default async function Footer({ hasBlog = true }: { hasBlog?: boolean }) 
   if (!data) return null;
 
   return (
-    <footer className="bg-white border-t border-white mt-8 p-8 text-sm text-gray-700">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between gap-6 text-center md:text-left">
+    <footer className="bg-white border-t border-white mt-8 px-4 py-8 sm:p-8 text-sm text-gray-700">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-6 text-center md:text-left">
         {/* Navigation Section */}
         <div className="flex flex-col items-center md:items-start">
           <h4 className="font-semibold mb-2 text-2xl">Navigation</h4>

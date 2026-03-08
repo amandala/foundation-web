@@ -7,7 +7,7 @@ export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white p-8 flex justify-between items-center max-w-7xl mx-auto relative">
+    <header className="bg-white px-4 py-6 sm:p-8 flex justify-between items-center max-w-6xl mx-auto relative">
       <Link href="/">
         <h1 className="text-xl font-bold">Foundation Collective</h1>
       </Link>
