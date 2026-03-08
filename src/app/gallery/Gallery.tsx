@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/image";
 import { GalleryImage } from "../types";
@@ -9,22 +9,33 @@ import { useSwipeable } from "react-swipeable";
 
 export const Gallery = ({
   galleryImages,
+  onLoadMore,
+  isLoading = false,
+  hasMore = false,
 }: {
   galleryImages: GalleryImage[];
+  onLoadMore?: () => void;
+  isLoading?: boolean;
+  hasMore?: boolean;
 }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const handleNext = useCallback(() => {
     if (selectedIndex === null) return;
-    setSelectedIndex((selectedIndex + 1) % galleryImages.length);
-  }, [selectedIndex, galleryImages.length]);
+    if (selectedIndex < galleryImages.length - 1) {
+      setSelectedIndex(selectedIndex + 1);
+    }
+    if (selectedIndex >= galleryImages.length - 5 && hasMore && onLoadMore) {
+      onLoadMore();
+    }
+  }, [selectedIndex, galleryImages.length, hasMore, onLoadMore]);
 
   const handlePrev = useCallback(() => {
     if (selectedIndex === null) return;
-    setSelectedIndex(
-      (selectedIndex - 1 + galleryImages.length) % galleryImages.length
-    );
-  }, [selectedIndex, galleryImages.length]);
+    if (selectedIndex > 0) {
+      setSelectedIndex(selectedIndex - 1);
+    }
+  }, [selectedIndex]);
 
   const handleClose = useCallback(() => {
     setSelectedIndex(null);
@@ -52,6 +63,26 @@ export const Gallery = ({
     trackTouch: true,
     trackMouse: false,
   });
+
+  // Infinite scroll observer
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!hasMore || !onLoadMore) return;
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          onLoadMore();
+        }
+      },
+      { rootMargin: "800px" }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, onLoadMore]);
 
   useEffect(() => {
     if (selectedIndex !== null) {
@@ -97,7 +128,26 @@ export const Gallery = ({
           );
         })}
       </div>
-      {selectedIndex !== null && (
+      {hasMore && (
+        <div ref={sentinelRef}>
+          {isLoading && (
+            <div
+              className="grid gap-1 mt-1"
+              style={{
+                gridTemplateColumns: `repeat(4, minmax(0, 1fr))`,
+              }}
+            >
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={`skeleton-${i}`}
+                  className={styles.skeleton}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      {selectedIndex !== null && selectedIndex < galleryImages.length && (
         <div
           className={styles.modalOverlay}
           onClick={handleClose}
