@@ -45,10 +45,10 @@ export default async function EventsPage() {
     }
 
     return (
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {eventList.map((event: Event) => {
           const coverUrl = event.coverImage
-            ? urlFor(event.coverImage)?.width(300)?.auto("format")?.url()
+            ? urlFor(event.coverImage)?.width(400)?.auto("format")?.url()
             : null;
 
           return (
@@ -65,36 +65,32 @@ export default async function EventsPage() {
                     src={coverUrl}
                     alt={event.name}
                     width={400}
-                    height={200}
-                    className="w-full object-cover"
+                    height={600}
+                    className="w-full h-auto"
                     placeholder="blur"
                     blurDataURL={
                       urlFor(event.coverImage)
                         ?.width(20)
-                        ?.height(14)
+                        ?.height(30)
                         ?.blur(10)
                         ?.url() || undefined
                     }
                     priority={false}
-                    style={{ objectFit: "cover" }}
                   />
                 )}
 
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold mb-2">{event.name}</h2>
-                  <p className="text-gray-600 mb-1">
+                <div className="px-3 pt-2 pb-1">
+                  <h2 className="text-base font-semibold mb-1">{event.name}</h2>
+                  <p className="text-gray-600 text-sm leading-tight !mb-0">
                     {new Date(event.startDate).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                      hour: "numeric",
                     })}
-
-                    <span> - </span>
-
+                    {" — "}
                     {new Date(event.endDate).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
-                      hour: "numeric",
+                      year: "numeric",
                     })}
                   </p>
                 </div>
