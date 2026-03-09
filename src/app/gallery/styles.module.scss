@@ -1,73 +1,109 @@
 .container {
-  max-width: 80rem; // max-w-3xl ~ 768px
+  max-width: 72rem; // matches max-w-6xl
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   min-height: 100vh;
+  overflow-x: hidden;
+
+  @media (min-width: 640px) {
+    padding: 2rem;
+  }
 }
 
-.filterRow {
+// Era toggle — segmented control look
+.eraToggle {
+  display: inline-flex;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.eraButton {
+  padding: 0.4rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--foreground);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:not(:last-child) {
+    border-right: 1px solid #d1d5db;
+  }
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
+.eraActive {
+  background-color: var(--foreground);
+  color: var(--background);
+
+  &:hover {
+    background-color: var(--foreground);
+  }
+}
+
+// Active filter chips
+.activeFilters {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
 }
 
-.tagButton {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  border: 1px solid var(--background);
-  background-color: var(--foreground);
-  color: var(--background);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-  cursor: pointer;
-  user-select: none;
+.activeFilterChip {
   display: inline-flex;
   align-items: center;
-  min-width: max-content;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  background-color: #e0e7ff;
+  color: #3730a3;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
 
   &:hover {
-    background-color: #d1d5db;
+    background-color: #c7d2fe;
   }
-}
-
-.activeTag {
-  background-color: #2563eb;
-  color: white;
-  border-color: #2563eb;
-}
-
-.filterHint {
-  color: #6b7280;
-  font-size: 0.875rem;
-  margin-bottom: 12px;
 }
 
 .removeX {
   margin-left: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1;
   opacity: 0.7;
 }
 
 .clearButton {
   font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 9999px;
-  border: 1px solid #ef4444;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  border: none;
   background-color: transparent;
   color: #ef4444;
   cursor: pointer;
+  white-space: nowrap;
 
   &:hover {
-    background-color: #ef4444;
-    color: white;
+    text-decoration: underline;
   }
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .artistSearch {
   position: relative;
-  width: 200px;
+  flex: 1;
+  min-width: 0;
+  max-width: 300px;
 }
 
 .searchInput {
@@ -124,7 +160,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1rem;
 }
 

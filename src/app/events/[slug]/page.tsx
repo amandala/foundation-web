@@ -91,7 +91,7 @@ export default async function EventPage({ params }: EventPageProps) {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden">
       {/* Event Header — side by side on desktop, stacked on mobile */}
       <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">

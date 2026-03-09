@@ -28,6 +28,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), Helvetica, sans-serif;
   font-size: 18px;
+  overflow-x: hidden;
 }
 
 a span,

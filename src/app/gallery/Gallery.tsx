@@ -98,10 +98,7 @@ export const Gallery = ({
   return (
     <div>
       <div
-        className="grid gap-1"
-        style={{
-          gridTemplateColumns: `repeat(${4}, minmax(0, 1fr))`,
-        }}
+        className="grid gap-1 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
       >
         {galleryImages.map((image, index) => {
           if (!image.image) return null;
@@ -132,10 +129,7 @@ export const Gallery = ({
         <div ref={sentinelRef}>
           {isLoading && (
             <div
-              className="grid gap-1 mt-1"
-              style={{
-                gridTemplateColumns: `repeat(4, minmax(0, 1fr))`,
-              }}
+              className="grid gap-1 mt-1 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
             >
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
