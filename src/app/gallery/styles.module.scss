@@ -103,7 +103,10 @@
   position: relative;
   flex: 1;
   min-width: 0;
-  max-width: 300px;
+
+  @media (min-width: 640px) {
+    max-width: 300px;
+  }
 }
 
 .searchInput {
@@ -111,7 +114,7 @@
   padding: 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 1rem; // 16px prevents iOS auto-zoom on focus
   outline: none;
   transition: border-color 0.2s;
 
