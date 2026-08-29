@@ -25,11 +25,11 @@ export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
 
       <nav>
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6 text-gray-700 font-semibold">
+        <ul className="hidden md:flex space-x-6 text-2xl font-semibold tracking-[0.05em] text-gray-700 [font-family:var(--font-anton)]">
           <li>
             <Link
               href="/gallery"
-              className="hover:text-blue-600"
+              className="hover:underline"
               onClick={() => setIsMenuOpen(false)}
             >
               Gallery
@@ -38,7 +38,7 @@ export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
           <li>
             <Link
               href="/events"
-              className="hover:text-blue-600"
+              className="hover:underline"
               onClick={() => setIsMenuOpen(false)}
             >
               Events
@@ -48,7 +48,7 @@ export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
             <li>
               <Link
                 href="/blog"
-                className="hover:text-blue-600"
+                className="hover:underline"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blog
@@ -92,7 +92,7 @@ export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <ul className="flex flex-col absolute top-full right-0 bg-white w-40 md:hidden z-50 border-4 border-gray-300">
+          <ul className="flex flex-col absolute top-full right-0 z-50 w-44 border-4 border-gray-300 bg-white text-2xl font-semibold tracking-[0.05em] [font-family:var(--font-anton)] md:hidden">
             <li>
               <Link
                 href="/gallery"
