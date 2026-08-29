@@ -4,6 +4,14 @@ import Image from "next/image";
 
 import { client } from "@/sanity/client";
 import { PageHeader } from "../components/PageHeader/PageHeader";
+import type { Metadata } from "next";
+import { createShareMetadata } from "../share-metadata";
+
+export const metadata: Metadata = createShareMetadata({
+  title: "Blog",
+  description: "Stories, updates, and perspectives from Foundation Collective.",
+  path: "/blog",
+});
 
 const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc)[0...10] {
   _id,

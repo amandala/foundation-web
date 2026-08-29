@@ -7,6 +7,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Event } from "../types";
 import { PageHeader } from "../components/PageHeader/PageHeader";
+import type { Metadata } from "next";
+import { createShareMetadata } from "../share-metadata";
+
+export const metadata: Metadata = createShareMetadata({
+  title: "Events",
+  description: "Explore upcoming and past Foundation Collective events in Calgary.",
+  path: "/events",
+});
 
 const EVENTS_QUERY = `*[_type == "event"] {
   _id,

@@ -11,11 +11,14 @@ import type { PortableTextMarkComponentProps } from "@portabletext/react";
 
 import { MapPinIcon } from "@heroicons/react/24/solid";
 import PartnerGrid from "@/app/components/Partners";
+import type { Metadata } from "next";
+import { createShareMetadata, SITE_DESCRIPTION } from "../../share-metadata";
 
 const EVENT_QUERY = `*[_type == "event" && slug.current == $slug][0]{
   _id,
   name,
   slug,
+  coverImage,
   "coverImageUrl": coverImage.asset->url,
   description,
   startDate,
@@ -41,6 +44,52 @@ interface EventPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+function eventDescription(blocks: unknown): string | undefined {
+  if (!Array.isArray(blocks)) return undefined;
+
+  return blocks
+    .map((block: { children?: { text?: string }[] }) =>
+      block.children?.map((child) => child.text || "").join("")
+    )
+    .filter(Boolean)
+    .join(" ")
+    .slice(0, 200) || undefined;
+}
+
+export async function generateMetadata({
+  params,
+}: EventPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const event = await client.fetch(
+    `*[_type == "event" && slug.current == $slug][0]{name, description, coverImage}`,
+    { slug },
+    { next: { revalidate: 30 } }
+  );
+
+  if (!event) {
+    return { title: "Event not found" };
+  }
+
+  return createShareMetadata({
+    title: event.name,
+    description: eventDescription(event.description) || SITE_DESCRIPTION,
+    path: `/events/${slug}`,
+    image: event.coverImage
+      ? {
+          url: urlFor(event.coverImage)
+            .width(1200)
+            .height(630)
+            .fit("crop")
+            .auto("format")
+            .url(),
+          width: 1200,
+          height: 630,
+          alt: event.name,
+        }
+      : undefined,
+  });
 }
 
 export default async function EventPage({ params }: EventPageProps) {

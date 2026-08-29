@@ -7,6 +7,8 @@ import "./globals.css";
 import Footer from "./components/footer";
 import Script from "next/script";
 import { client } from "@/sanity/client";
+import type { Metadata } from "next";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./share-metadata";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -21,9 +23,36 @@ const inter = Inter({
   fallback: ["Helvetica", "sans-serif"],
 });
 
-export const metadata = {
-  title: "Foundation Collective",
-  description: "Foundation Collective",
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    siteName: SITE_NAME,
+    locale: "en_CA",
+    type: "website",
+    images: [
+      {
+        url: "/pageshare.jpg",
+        width: 1200,
+        height: 630,
+        alt: "An artist painting a colourful mural",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/pageshare.jpg"],
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [

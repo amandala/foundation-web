@@ -6,13 +6,17 @@ import { client } from "@/sanity/client";
 import Link from "next/link";
 import Image from "next/image";
 import { Gallery } from "@/app/gallery/Gallery";
+import type { Metadata } from "next";
+import { createShareMetadata, SITE_DESCRIPTION } from "../../share-metadata";
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
   _id,
   title,
   slug,
   body,
+  description,
   publishedAt,
+  mainImage,
   "imageUrl": mainImage.asset->url,
   event->{
     _id,
@@ -40,6 +44,42 @@ interface PostPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await client.fetch(
+    `*[_type == "post" && slug.current == $slug][0]{title, description, publishedAt, mainImage}`,
+    { slug },
+    options
+  );
+
+  if (!post) {
+    return { title: "Post not found" };
+  }
+
+  return createShareMetadata({
+    title: post.title,
+    description: post.description || SITE_DESCRIPTION,
+    path: `/blog/${slug}`,
+    type: "article",
+    publishedTime: post.publishedAt,
+    image: post.mainImage
+      ? {
+          url: urlFor(post.mainImage)
+            .width(1200)
+            .height(630)
+            .fit("crop")
+            .auto("format")
+            .url(),
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      : undefined,
+  });
 }
 
 export default async function PostPage({ params }: PostPageProps) {
