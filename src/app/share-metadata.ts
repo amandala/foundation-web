@@ -20,7 +20,7 @@ type ShareMetadataInput = {
 };
 
 const defaultImage = {
-  url: "/pageshare.jpg",
+  url: "/pageshare-branded.jpg",
   width: 1200,
   height: 630,
   alt: "An artist painting a colourful mural",

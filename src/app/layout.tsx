@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/pageshare.jpg",
+        url: "/pageshare-branded.jpg",
         width: 1200,
         height: 630,
         alt: "An artist painting a colourful mural",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: ["/pageshare.jpg"],
+    images: ["/pageshare-branded.jpg"],
   },
   manifest: "/manifest.webmanifest",
   icons: {
@@ -72,7 +72,7 @@ export default async function RootLayout({
   const postCount = await client.fetch<number>(
     `count(*[_type == "post"])`,
     {},
-    { next: { revalidate: 30 } }
+    { next: { revalidate: 30 } },
   );
   const hasBlog = postCount > 0;
 
