@@ -12,7 +12,8 @@ import { createShareMetadata } from "../share-metadata";
 
 export const metadata: Metadata = createShareMetadata({
   title: "Events",
-  description: "Explore upcoming and past Foundation Collective events in Calgary.",
+  description:
+    "Explore upcoming and past Foundation Collective events in Calgary.",
   path: "/events",
 });
 
@@ -28,24 +29,29 @@ const EVENTS_QUERY = `*[_type == "event"] {
 export default async function EventsPage() {
   const events = await client.fetch(EVENTS_QUERY, {}, { cache: "no-store" });
 
-  // Get today's date (no time)
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  function dateOnly(date: string): string {
+    return date.slice(0, 10);
+  }
+
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Denver",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
 
   // Separate upcoming and past events based on endDate
   const upcomingEvents = events
-    .filter((event: Event) => new Date(event.endDate) >= today)
-    .sort(
-      (a: Event, b: Event) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    .filter((event: Event) => dateOnly(event.endDate) >= today)
+    .sort((a: Event, b: Event) =>
+      dateOnly(a.startDate).localeCompare(dateOnly(b.startDate)),
     );
 
   const pastEvents = events
-    .filter((event: Event) => new Date(event.endDate) < today)
-    .sort(
-      (a: Event, b: Event) =>
-        new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
-    ); // Most recent past events first
+    .filter((event: Event) => dateOnly(event.endDate) < today)
+    .sort((a: Event, b: Event) =>
+      dateOnly(b.endDate).localeCompare(dateOnly(a.endDate)),
+    );
 
   function renderEventList(eventList: Event[]) {
     if (eventList.length === 0) {
@@ -91,11 +97,13 @@ export default async function EventsPage() {
                   <h2 className="text-base font-semibold mb-1">{event.name}</h2>
                   <p className="text-gray-600 text-sm leading-tight !mb-0">
                     {new Date(event.startDate).toLocaleDateString("en-US", {
+                      timeZone: "America/Denver",
                       month: "short",
                       day: "numeric",
                     })}
                     {" — "}
                     {new Date(event.endDate).toLocaleDateString("en-US", {
+                      timeZone: "America/Denver",
                       month: "short",
                       day: "numeric",
                       year: "numeric",
