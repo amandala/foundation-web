@@ -33,7 +33,7 @@ export default async function BlogPage() {
   if (posts.length === 0) {
     return (
       <main className="container mx-auto min-h-screen max-w-3xl p-8">
-        <PageHeader title="Blog" />
+        <PageHeader title="Blog" imageSrc="/blog.png" />
         <div className="text-center py-16">
           <p className="text-xl text-gray-600 mb-4">
             No posts yet — stay tuned!
@@ -49,7 +49,7 @@ export default async function BlogPage() {
 
   return (
     <main className="container mx-auto min-h-screen max-w-3xl p-8">
-      <PageHeader title="Blog" />
+      <PageHeader title="Blog" imageSrc="/blog.png" />
       <ul className="flex flex-col gap-y-24 pt-8">
         {posts.map((post) => (
           <li className="hover:underline" key={post._id}>

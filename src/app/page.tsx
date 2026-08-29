@@ -92,11 +92,27 @@ export default async function Home() {
 
         {/* Intro Section */}
         <section className="mx-auto relative py-12 mt-24">
-          <div className={styles.textBg}>FOUNDATION COLLECTIVE</div>
+          <div className={styles.textBg} aria-hidden="true">
+            <Image
+              src="/FoundationCollective_stacked.png"
+              alt=""
+              width={1739}
+              height={792}
+              sizes="100vw"
+            />
+          </div>
 
           <div className="relative z-10 mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-bold text-center mb-8">
-              Foundation Collective
+            <h1 className="mb-8">
+              <Image
+                src="/FoundationCollective_stacked.png"
+                alt="Foundation Collective"
+                width={1739}
+                height={792}
+                className={`${styles.titleImage} mx-auto h-auto w-full max-w-xl`}
+                priority
+                sizes="(max-width: 768px) 100vw, 576px"
+              />
             </h1>
             <div className="prose mx-auto p-8">
               <PortableText value={(introText || []) as PortableTextBlock[]} />

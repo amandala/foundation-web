@@ -7,3 +7,19 @@
   line-height: 1;
   margin-bottom: 24px;
 }
+
+.headerImage {
+  position: relative;
+  width: 100%;
+  max-width: 768px;
+  aspect-ratio: 2.25 / 1;
+  margin: 0 auto 24px;
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.headerImageSmall {
+  max-width: 420px;
+}

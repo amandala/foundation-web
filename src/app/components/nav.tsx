@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
@@ -8,8 +9,18 @@ export default function Nav({ hasBlog = true }: { hasBlog?: boolean }) {
 
   return (
     <header className="bg-white px-4 py-6 sm:p-8 flex justify-between items-center max-w-6xl mx-auto relative">
-      <Link href="/">
-        <h1 className="text-xl font-bold">Foundation Collective</h1>
+      <Link href="/" aria-label="Foundation Collective home">
+        <h1>
+          <Image
+            src="/FoundationCollective_stacked.png"
+            alt="Foundation Collective"
+            width={1739}
+            height={792}
+            className="h-auto w-40 dark:brightness-0 dark:invert"
+            priority
+            sizes="160px"
+          />
+        </h1>
       </Link>
 
       <nav>

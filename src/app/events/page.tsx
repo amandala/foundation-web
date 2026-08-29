@@ -104,7 +104,7 @@ export default async function EventsPage() {
 
   return (
     <main className="container mx-auto min-h-screen max-w-5xl p-8">
-      <PageHeader title="Events" />
+      <PageHeader title="Events" imageSrc="/events.png" />
 
       <section className="mb-12">
         <h2 className="text-3xl font-semibold mb-6">Upcoming Events</h2>

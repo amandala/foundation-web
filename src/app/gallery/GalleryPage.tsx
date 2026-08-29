@@ -130,7 +130,7 @@ const GalleryPage = () => {
 
   return (
     <main className={styles.container}>
-      <PageHeader title="Gallery" />
+      <PageHeader title="Gallery" imageSrc="/gallery.png" />
       <div className="my-4 space-y-3">
         {/* Era toggle */}
         <div className={styles.eraToggle}>

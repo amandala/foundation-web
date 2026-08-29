@@ -21,23 +21,34 @@
 }
 
 .textBg {
-  font-size: min(18vw, 16rem);
-  color: #bdbdbd;
-  font-family: var(--font-anton), sans-serif;
-  letter-spacing: 0.05em;
-  opacity: 0.18;
+  display: none;
+  opacity: 0.05;
   user-select: none;
-  line-height: 1;
   width: 100vw;
-  text-align: center;
-  -webkit-text-stroke: 2px #bdbdbd;
   overflow: hidden;
   position: absolute;
-  top: 0;
+  top: 125px;
   left: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
   pointer-events: none;
   z-index: 0;
+
+  img {
+    width: min(100vw, 1739px);
+    height: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .textBg {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .titleImage,
+  .textBg img {
+    filter: brightness(0) invert(1);
+  }
 }
