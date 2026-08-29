@@ -23,3 +23,10 @@
 .headerImageSmall {
   max-width: 420px;
 }
+
+@media (prefers-color-scheme: dark) {
+  .headerImage,
+  .headerText img {
+    filter: brightness(0) invert(1);
+  }
+}
